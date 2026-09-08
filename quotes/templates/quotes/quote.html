@@ -1,0 +1,12 @@
+<!-- quotes/templates/quotes/quote.html -->
+
+{% extends 'quotes/base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'styles.css' %}" />
+<div>
+  <h2>Your random quote is:</h2>
+  <p class="quote">"{{quotes}}"</p>
+  <br />
+  <img src="{% static quotesimg %}" alt="hi" />
+</div>
+
+{% endblock %}

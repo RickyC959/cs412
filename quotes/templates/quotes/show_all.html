@@ -1,0 +1,22 @@
+<!-- quotes/templates/quotes/show_all.html -->
+
+{% extends 'quotes/base.html' %} {%load static%} {% block content %}
+
+<link rel="stylesheet" href="{% static 'styles.css' %}" />
+<div>
+  <h2>All quotes</h2>
+  {% for quote in quotes %}
+  <p class="quote">"{{quote}}"</p>
+  {% empty %}
+  <p>No quotes available.</p>
+  {% endfor %}
+  <h2>All photos</h2>
+
+  {% for img in quotesimg %}
+  <br />
+  <img src="{% static img %}" alt="quote img" /> {% empty %}
+  <p>No images available.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

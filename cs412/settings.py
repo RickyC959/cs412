@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import socket
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#(tes7rpvv@(^b@^yts-4ycx$m8izh9)k8q%27@kt5-ndj(p4d"
+SECRET_KEY = "django-insecure-@^b!*mq2shw)ax69dfy_^olodb6*0)k#v6j2se2_-gmc^5p5k7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cs-webapps.bu.edu']
+ALLOWED_HOSTS = ["*", 'cs-webapps.bu.edu',]
 
 
 # Application definition
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "hw",
+    "quotes",
 ]
 
 MIDDLEWARE = [
@@ -58,6 +61,7 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
+            "string_if_invalid": "WARNING: {{%s}} not a valid context variable",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -114,6 +118,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'  # note: no leading slash!
 
@@ -127,8 +132,8 @@ MEDIA_URL = "media/"  # note: no leading slash!
 CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
-    STATIC_URL = '/rcui1/static/'
-    MEDIA_URL = '/rcui1/media/'
+    STATIC_URL = '/username/static/'
+    MEDIA_URL = '/username/media/'
 
 
 # Email

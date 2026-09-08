@@ -1,0 +1,20 @@
+<!-- quotes/templates/quotes/about.html -->
+
+{% extends 'quotes/base.html' %} {% block content %}. {% load static %}
+<link rel="stylesheet" href="{% static 'styles.css' %}" />
+<h1>Marcus Aurelius</h1>
+<br />
+<img src="{% static img %}" alt="quote img" class="img" />
+<p>
+  Find out more about
+  <a href="https://en.wikipedia.org/wiki/Marcus_Aurelius">Marcus Aurelius</a>
+</p>
+
+<br />
+<p>
+  His full name was <em>Marcus Aurelius Antoninus</em>. He lived from the 26th
+  of April of 121 AD and passed on the 17th of March 180 AD, serving as the
+  Emperor of Rome from 161 AD to 180 AD.
+</p>
+
+{% endblock %}

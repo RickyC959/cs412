@@ -1,0 +1,23 @@
+<!-- quotes/templates/quotes/base.html -->
+{% load static %}
+<html>
+  <head>
+    <title>Hello, world!</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  </head>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'quote' %}">Roll for Another Quote</a></li>
+        <li><a href="{% url 'show_all' %}">Show all</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+      </ul>
+    </nav>
+  </header>
+  <body>
+    <br /><br />
+    {% block content %} {% endblock %}
+
+    <footer>The current time is {{current_time}}.</footer>
+  </body>
+</html>
