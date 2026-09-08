@@ -1,1 +1,1 @@
-https://cs-webapps.bu.edu/rcui1/cs412/quotes/
+https://cs-webapps.bu.edu/rcui1/quotes/quote
