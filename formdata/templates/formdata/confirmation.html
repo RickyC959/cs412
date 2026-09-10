@@ -1,0 +1,12 @@
+<!-- formdata/templates/formdata/form.html -->
+{% extends 'formdata/base.html' %} {% block content %} {% load static %}
+<div>
+  <h1>Confirmation Page</h1>
+
+  <p>Hi, {{ name }}</p>
+
+  <p>You have sucessfull sumbitted the form</p>
+
+  <p>you said your favorite_color was {{favorite_color}}</p>
+</div>
+{% endblock %}

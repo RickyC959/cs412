@@ -1,0 +1,17 @@
+<!-- restaurant/templates/restaurant/base.html -->
+{% load static %}
+<html>
+  <head>
+    <title>Resturant name</title>
+    <link rel="stylesheet" href="{% static 'restaurant.css' %}" />
+  </head>
+  <header>
+    <h1>Resturant name here</h1>
+  </header>
+  <body>
+    <br /><br />
+    {% block content %} {% endblock %}
+
+    <footer>The current time is {{current_time}}.</footer>
+  </body>
+</html>

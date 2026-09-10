@@ -1,10 +1,16 @@
-<!-- quotes/templates/quotes/base.html -->
+<!-- 
+File: quotes/templates/quotes/base.html
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: This is the base page that the other HTML files are based off of. 
+-->
 {% load static %}
 <html>
   <head>
-    <title>Hello, world!</title>
+    <title>Marcus Aurelius Quotes</title>
+    <!--links the css sheet to this page.-->
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
   </head>
+  <!--This is the Header and Navagation bar. -->
   <header>
     <nav>
       <ul>
@@ -16,6 +22,7 @@
   </header>
   <body>
     <br /><br />
+    <!-- The other HTML files will go here. -->
     {% block content %} {% endblock %}
 
     <footer>The current time is {{current_time}}.</footer>

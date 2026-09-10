@@ -1,10 +1,17 @@
-<!-- quotes/templates/quotes/show_all.html -->
+<!-- 
+File: quotes/templates/quotes/show_all.html
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: This page displays all the quotes and images.
+-->
 
 {% extends 'quotes/base.html' %} {%load static%} {% block content %}
 
+<!--links the css sheet to this page.-->
 <link rel="stylesheet" href="{% static 'styles.css' %}" />
 <div>
   <h2>All quotes</h2>
+
+  <!-- this uses a loop to display each quote. if the list is empty it will display "No quotes available."-->
   {% for quote in quotes %}
   <p class="quote">"{{quote}}"</p>
   {% empty %}
@@ -12,9 +19,11 @@
   {% endfor %}
   <h2>All photos</h2>
 
+  <!-- this uses a loop to display each image. if the list is empty it will display "No image available."-->
   {% for img in quotesimg %}
   <br />
-  <img src="{% static img %}" alt="quote img" /> {% empty %}
+  <img src="{% static img %}" alt="quote img" />
+  {% empty %}
   <p>No images available.</p>
   {% endfor %}
 </div>

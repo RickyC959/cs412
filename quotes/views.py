@@ -1,4 +1,6 @@
 # file: quotes/views.py
+# Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+# Description: This page contains any information the page needs. it formats and displays the different quotes.
 
 import random
 from django.shortcuts import render
@@ -6,7 +8,7 @@ from django.http import HttpRequest, HttpResponse
 import time
 import os
 
-os.environ["TZ"] = "America/New_York"
+# sets the correct timezone accroding to the users computer
 time.tzset()
 
 # Create your views here.
@@ -23,7 +25,10 @@ def home(request):
 
     # the template to which we will delegate the work
     template = 'quotes/quote.html'
+
+    # generates a random number
     index = random.randint(0, len(quotes)-1)
+
     # a dict of key/value pairs, to be available for use in template
     context = {
         'quotes': str(quotes[index]),
@@ -40,8 +45,10 @@ def quote(request):
     # the template to which we will delegate the work
     template = 'quotes/quote.html'
 
-    # a dict of key/value pairs, to be available for use in template
+    # generates a random number
     index = random.randint(0, len(quotes)-1)
+
+    # a dict of key/value pairs, to be available for use in template
     context = {
         'quotes': str(quotes[index]),
         'quotesimg': str(quotesimg[index]),
