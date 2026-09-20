@@ -1,4 +1,6 @@
-# file: restaurant/urls.py
+# File: restaurant/urls.py
+# Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+# Description:
 
 from django.urls import path
 from django.conf.urls.static import static

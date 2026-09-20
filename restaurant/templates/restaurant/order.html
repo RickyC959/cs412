@@ -1,0 +1,77 @@
+<!-- 
+File: restaurant/templates/restaurant/order.html 
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: This view will need to create a “daily special” item (choose randomly from a list), and add it to the context dictionary for the page.
+-->
+{% extends 'restaurant/base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'restaurant.css' %}" />
+
+<p>TODAYS SPECIAL : {{daily_special.0}}</p>
+
+<form action="{% url 'confirmation' %}" method="post" class="site-form">
+  {% csrf_token %}
+
+  <label for="name">Name:</label>
+  <input type="text" name="name" placeholder="First name Last name" />
+  <br />
+  <label for="phone">Phone #:</label>
+  <input type="text" name="phone" placeholder="(123) 456-7890" />
+  <br />
+  <label for="email">Email:</label>
+  <input type="email" name="email" placeholder="YourEmail@gmail.com" />
+  <br />
+
+  {% for item,price in four_items %} {% if daily_special.0 != item %}
+  <input
+    type="checkbox"
+    name="ordered_items"
+    value="{{item}}|{{price}}"
+    class="input"
+    id="{{item}}"
+  />{{item}}: ${{price}}<br />
+  {% else %}
+  <input
+    type="checkbox"
+    name="ordered_items"
+    value="{{item}}|{{price}}"
+    class="site-form"
+    id="{{item}}"
+  />TODAYS SPECIAL : {{item}}: ${{price}} !!!!! <br />{% endif %} {% endfor %}
+  <div id="extra-options-menu" class="hidden-options">
+    <p>Select your sides:</p>
+    <input type="checkbox" name="ordered_items" value="Kimchi|0.00" /> Kimchi:
+    $3.00 <br />
+    <input type="checkbox" name="ordered_items" value="Steamed Rice|2.00" />
+    Steemed Rice: $2.00
+    <br />
+  </div>
+  <br />
+  <label for="specialInstructions">Any Special Instructions? :</label>
+  <input type="text" name="specialInstructions" />
+  <br />
+  <input type="submit" />
+</form>
+
+<!-- AI was used for the script-->
+<script>
+  // Find the checkbox and the hidden div
+  const triggerCheckbox = document.getElementById("Fish Cake Soup(with sides)");
+  const optionsMenu = document.getElementById("extra-options-menu");
+
+  // Listen for changes to the checkbox
+  triggerCheckbox.addEventListener("change", function () {
+    if (this.checked) {
+      optionsMenu.style.display = "block"; // Show the options
+    } else {
+      optionsMenu.style.display = "none"; // Hide them again
+
+      // Optional: Uncheck the hidden boxes if the user closes the menu
+      const hiddenBoxes = optionsMenu.querySelectorAll(
+        'input[type="checkbox"]',
+      );
+      hiddenBoxes.forEach((box) => (box.checked = false));
+    }
+  });
+</script>
+
+{% endblock %}

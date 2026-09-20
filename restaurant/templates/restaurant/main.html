@@ -1,11 +1,20 @@
-<!-- restaurant/templates/quotes/main.html -->
-{% load static %}{% block content %}
+<!-- 
+File: restaurant/templates/restaurant/main.html 
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: 
+-->
+{% extends 'restaurant/base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'restaurant.css' %}" />
 
-<p>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. In molestias
-  cupiditate quaerat consequuntur harum sunt maiores recusandae dolorem
-  blanditiis reprehenderit, alias ab quod tempora rem similique rerum? Harum,
-  unde alias.
-</p>
+<p>This is our main page dont ask my we only have 4 items on our menu</p>
 
+<h1>Menu</h1>
+<div class="menu">
+  <ul>
+    {% for item,price in four_items %}
+    <li>{{item}}: ${{price}}</li>
+    <br />
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

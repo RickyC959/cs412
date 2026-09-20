@@ -20,10 +20,10 @@ def show_form(request):
 
 def submit(request):
 
-    template_name = "formdata/confirmation.html"
     print(request.POST)
 
     if request.POST:
+        template_name = "formdata/confirmation.html"
         name = request.POST['name']
         fav_color = request.POST['favorite_color']
 

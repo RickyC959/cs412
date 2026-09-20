@@ -1,15 +1,37 @@
-<!-- restaurant/templates/restaurant/base.html -->
+<!-- 
+restaurant/templates/restaurant/base.html 
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: 
+-->
 {% load static %}
 <html>
   <head>
-    <title>Resturant name</title>
+    <title>Seoul Topokki</title>
+
     <link rel="stylesheet" href="{% static 'restaurant.css' %}" />
   </head>
   <header>
-    <h1>Resturant name here</h1>
+    <div class="headerbar">
+      <h1>Seoul Topokki</h1>
+
+      <p class="address">164-166 Harvard Ave, Allston, MA 02134</p>
+      <p>(617) 208-8029</p>
+      <nav>
+        <ul>
+          <li><a href="{% url 'main' %}">Home</a></li>
+          <li><a href="{% url 'order' %}">Order here</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
   <body>
-    <br /><br />
+    <img
+      src="{%static 'img/restaurant/teehee.jpeg'%}"
+      alt="img of food at Seoul Topokki here"
+      class="img"
+    />
+    <br />
+
     {% block content %} {% endblock %}
 
     <footer>The current time is {{current_time}}.</footer>

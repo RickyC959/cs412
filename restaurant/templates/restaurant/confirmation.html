@@ -1,6 +1,17 @@
-<!-- file: restaurant/confirmation.html -->
-{% load static %}{% block content %}
+<!-- 
+File: restaurant/confirmation.html 
+Author: Ricky Cui (rcui1@bu.edu), 9/10/2026
+Description: 
+-->
+{% extends 'restaurant/base.html' %} {% load static %}{% block content %}
+<link rel="stylesheet" href="{% static 'restaurant.css' %}" />
+<h3>Hey {{name}}, Thank you for Ordering!</h3>
+<p>
+  Your Phone Number is: {{phone}} <br />
 
-<h3>Thank you for Ordering!</h3>
+  Your Email is: {{email}} <br />
+  You ordered: {% for item in items %} <br />{{item}} {% endfor %} <br />
+  The Total Price: ${{total_price}}
+</p>
 
 {% endblock %}
