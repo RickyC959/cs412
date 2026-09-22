@@ -6,12 +6,16 @@ Description:
 {% extends 'restaurant/base.html' %} {% load static %}{% block content %}
 <link rel="stylesheet" href="{% static 'restaurant.css' %}" />
 <h3>Hey {{name}}, Thank you for Ordering!</h3>
-<p>
-  Your Phone Number is: {{phone}} <br />
 
+<p>
+  Your order will be ready: {{ready_time}}
+  <br />
+  <br />
+  Your Phone Number is: {{phone}} <br />
   Your Email is: {{email}} <br />
   You ordered: {% for item in items %} <br />{{item}} {% endfor %} <br />
-  The Total Price: ${{total_price}}
+  <br />
+  Total Price: ${{total_price}}
 </p>
 
 {% endblock %}

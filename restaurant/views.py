@@ -77,6 +77,7 @@ def confirmation(request):
         print("Total Price: $", total_price)
         context = {
             'current_time': time.ctime(),
+            'ready_time': time.ctime(time.time() + random.randint(1800, 3600)),
             'name': name,
             'phone': phone,
             'email': email,
