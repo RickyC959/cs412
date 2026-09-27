@@ -1,0 +1,12 @@
+<!--# File: mini_insta/views.py
+# Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
+# Description: 
+-->
+{%extends 'mini_insta/base.html'%} {% block content %}
+<h2>All profiles</h2>
+
+{% for profile in profiles%} Username: {{ profile.username }} Display Name:
+{{profile.display_name}}
+<img src="{{profile.profile_image_url}}" alt="" /> <br />
+
+{% endfor %} {% endblock %}
