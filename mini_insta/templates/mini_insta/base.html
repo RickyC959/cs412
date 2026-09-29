@@ -1,15 +1,24 @@
+<!--# File: mini_insta/base.html
+# Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
+# Description: 
+-->
+
 {%load static%}
 <html>
   <head>
-    mini_insta
-    <link rel="stylesheet" href="" />
+    <title>Mini Insta</title>
+    <link rel="stylesheet" href="{% static 'mini_insta.css' %}" />
   </head>
 
   <body>
     <header>
-      <h1>mini_insta</h1>
+      <h1>Mini Insta</h1>
     </header>
 
     {% block content %} {% endblock %}
   </body>
+
+  <footer>
+    <li><a href="/mini_insta/show_all_profiles">Show All</a></li>
+  </footer>
 </html>

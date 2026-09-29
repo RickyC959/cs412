@@ -5,10 +5,12 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import ProfileListView
+from .views import ProfileListView, ProfileDetailView
 
 
 urlpatterns = [
-    path('', ProfileListView.as_view(), name="show_all_profiles")
+    path('', ProfileListView.as_view(), name=""),
+    path('show_all_profiles', ProfileListView.as_view(), name="show_all_profiles"),
+    path('profile/<int:pk>', ProfileDetailView.as_view(), name="show_profile"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

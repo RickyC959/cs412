@@ -1,4 +1,6 @@
 # File: blog/urls.py
+# Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
+# Description:
 from django.urls import path
 from .views import *
 

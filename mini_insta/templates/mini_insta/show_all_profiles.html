@@ -1,12 +1,22 @@
-<!--# File: mini_insta/views.py
+<!--# File: mini_insta/show_all_profiles.html
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: 
 -->
 {%extends 'mini_insta/base.html'%} {% block content %}
 <h2>All profiles</h2>
-
-{% for profile in profiles%} Username: {{ profile.username }} Display Name:
-{{profile.display_name}}
-<img src="{{profile.profile_image_url}}" alt="" /> <br />
-
-{% endfor %} {% endblock %}
+<main class="grid-container">
+  {% for profile in profiles%}
+  <article>
+    <div>
+      Username: {{ profile.username }} <br />
+      Display Name: {{profile.display_name}}
+    </div>
+    <a href="{% url 'show_profile' profile.pk %}">
+      <img src="{{profile.profile_image_url}}" alt=""
+    /></a>
+    <br />
+    <hr />
+  </article>
+  {% endfor %}
+</main>
+{% endblock %}

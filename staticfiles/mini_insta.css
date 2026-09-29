@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Global Reset & Typography
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background-color: #fafafa;
+  color: #262626;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   Header & Footer
+   ========================================================================== */
+header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 1rem 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-style: italic; /* Mimics a stylized brand logo */
+  font-weight: 700;
+  color: #262626;
+}
+
+footer {
+  background-color: #ffffff;
+  border-top: 1px solid #dbdbdb;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: auto; /* Pushes footer to the bottom */
+}
+
+footer li {
+  list-style-type: none;
+}
+
+footer a {
+  text-decoration: none;
+  color: #0095f6; /* Classic social media blue */
+  font-weight: 600;
+}
+
+footer a:hover {
+  color: #00376b;
+}
+
+/* ==========================================================================
+   Main Layout & Typography
+   ========================================================================== */
+main,
+h2 {
+  max-width: 935px; /* Standard wide container size */
+  margin: 2rem auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 1.75rem;
+  color: #8e8e8e;
+  margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   Show All Profiles (Grid View)
+   ========================================================================== */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+article {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+article div {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+article a {
+  display: inline-block;
+  margin-top: auto;
+}
+
+/* Profile Image in the Grid */
+article img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #efefef;
+  transition: transform 0.2s ease;
+}
+
+article img:hover {
+  transform: scale(1.05);
+}
+
+/* Hide the <hr> since the article border creates enough separation */
+article hr {
+  display: none;
+}
+
+/* ==========================================================================
+   Show Single Profile
+   ========================================================================== */
+main:not(.grid-container) {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  font-size: 1.1rem;
+}
+
+main:not(.grid-container) img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #efefef;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

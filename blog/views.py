@@ -1,4 +1,6 @@
 # File: blog/views.py
+# Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
+# Description:
 
 import random
 
