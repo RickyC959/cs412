@@ -1,6 +1,6 @@
 # File: mini_insta/models.py
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
-# Description:
+# Description: all the models that are part of this app
 
 from django.db import models
 

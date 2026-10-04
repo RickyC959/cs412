@@ -1,6 +1,6 @@
 # File: mini_insta/views.py
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
-# Description:
+# Description: all the views that are part of this app
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Profile

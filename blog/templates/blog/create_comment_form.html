@@ -1,0 +1,19 @@
+<!--
+File: blog/create_comment_form.html
+Author: Ricky Cui (rcui1@bu.edu), 10/4/2026
+Description: 
+
+-->
+
+{% extends 'blog/base.html'%} {% block content%}
+
+<h1>Create New Comment about {{article.title}}</h1>
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    {{form.as_table}}
+  </table>
+
+  <input type="submit" name="submit" value="submit" />
+</form>
+{%endblock%}

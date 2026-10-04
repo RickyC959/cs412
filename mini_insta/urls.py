@@ -1,6 +1,6 @@
 # File: mini_insta/urls.py
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
-# Description:
+# Description: all the URLs that are part of this app
 
 from django.urls import path
 from django.conf.urls.static import static
