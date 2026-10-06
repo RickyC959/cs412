@@ -2,21 +2,24 @@
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: The html page that dispays the all the users profiles
 -->
-{%extends 'mini_insta/base.html'%} {% block content %}
+{%extends 'mini_insta/base.html'%} {% block content %} {% load static %}
 <h2>All profiles</h2>
 <main class="grid-container">
   {% for profile in profiles%}
-  <article>
+  <div class="profile">
     <div>
       Username: {{ profile.username }} <br />
       Display Name: {{profile.display_name}}
     </div>
     <a href="{% url 'show_profile' profile.pk %}">
-      <img src="{{profile.profile_image_url}}" alt=""
-    /></a>
+      {% if profile.profile_image_url %}
+      <img src="{{profile.profile_image_url}}" alt="pfp" />
+      {% else %}
+      <img src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+      {% endif %}
+    </a>
     <br />
-    <hr />
-  </article>
+  </div>
   {% endfor %}
 </main>
 {% endblock %}

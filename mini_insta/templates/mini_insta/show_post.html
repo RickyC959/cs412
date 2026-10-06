@@ -1,0 +1,28 @@
+<!--# File: mini_insta/show_post.html
+# Author: Ricky Cui (rcui1@bu.edu), 10/6/2026
+# Description: The html page that dispays a single users profiles
+-->
+{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
+
+<main>
+  <div class="profile">
+
+    <strong
+      >Caption: {{post.caption}} <br />
+      Posted at: {{post.timestamp}}</strong
+    >
+
+    {% for photo in post.get_all_photos %}
+    <img class="post" src="{{photo.image_url }}" alt="pfp" />
+  
+    {% empty %}
+    <img
+      class="post"
+      src="{% static 'img/mini_insta/no_posts.png'%}"
+      alt="pfp"
+    />
+    {% endfor %}
+
+  </div>
+</main>
+{% endblock %}

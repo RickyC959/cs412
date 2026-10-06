@@ -93,7 +93,7 @@ h2 {
   gap: 2rem;
 }
 
-article {
+.profile {
   background-color: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
@@ -105,34 +105,48 @@ article {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-article div {
+.profile div {
   margin-bottom: 1rem;
   font-size: 0.95rem;
   font-weight: 500;
 }
 
-article a {
+.profile a {
   display: inline-block;
   margin-top: auto;
 }
 
 /* Profile Image in the Grid */
-article img {
-  width: 150px;
-  height: 150px;
+.profile img {
+  width: 200px;
+  height: auto;
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid #efefef;
   transition: transform 0.2s ease;
 }
 
-article img:hover {
+.profile img:hover {
   transform: scale(1.05);
 }
 
 /* Hide the <hr> since the article border creates enough separation */
-article hr {
+.profile hr {
   display: none;
+}
+
+.profile img.post {
+  width: auto;
+  max-width: 500px;
+  height: auto;
+  aspect-ratio: 1 / 1; /* Forces a perfect square */
+  object-fit: cover;
+  border-radius: 4px; /* Overrides the 50% circle rule from 'article img' */
+  border: 1px solid #efefef;
+}
+
+.profile img.post:hover {
+  transform: none;
 }
 
 /* ==========================================================================
@@ -148,7 +162,7 @@ main:not(.grid-container) {
   font-size: 1.1rem;
 }
 
-main:not(.grid-container) img {
+main:not(.grid-container) img.profile-pic {
   width: 200px;
   height: 200px;
   object-fit: cover;

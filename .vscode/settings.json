@@ -1,3 +1,24 @@
 {
-  "python-envs.defaultEnvManager": "ms-python.python:pipenv"
+  // Enable auto-formatting on every file save
+  "editor.formatOnSave": true,
+
+  // 1. Python Formatting (Using Ruff as an example)
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.技術-ruff",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // 2. Map HTML files in template directories to Django HTML
+  "files.associations": {
+    "**/templates/**/*.html": "django-html",
+    "*.html": "django-html"
+  },
+
+  // 3. Django Template Formatting (Using djLint)
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "editor.wordWrap": "on"
+  }
 }

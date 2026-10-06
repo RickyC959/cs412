@@ -1,14 +1,50 @@
-<!--# File: mini_insta/show_profile.py
+<!--# File: mini_insta/show_profile.html
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: The html page that dispays a single users profiles
 -->
-{%extends 'mini_insta/base.html'%} {% block content %}
+{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
 
 <main>
-  Username: {{ profile.username }} <br />
+  <div class="profile">
+    {% if profile.profile_image_url %}
+    <img src="{{profile.profile_image_url}}" alt="pfp" />
+    {% else %}
+    <img src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+    {% endif %}
+    <br />
+    Username: {{ profile.username }} <br />
 
-  Display Name:{{profile.display_name}} <br />
-  About: <br />{{profile.bio_text}}
-  <img src="{{profile.profile_image_url}}" alt="" /> <br />
+    Display Name:{{profile.display_name}} <br />
+    About: <br />{{profile.bio_text}}
+    <br />
+
+    <h3>POSTS:</h3>
+
+    {% for post in profile.get_all_posts %} 
+    <a href="{% url 'post' post.pk %}">
+      {% if post.get_all_photos.0.image_url %}
+        <img class="post" src="{{post.get_all_photos.0.image_url}}" alt="post" />
+        <strong>Caption: {{post.caption}} <br />
+          Posted at: {{post.timestamp}}</strong
+        >
+       
+      {% else %}
+        <img
+        class="post"
+        src="{% static 'img/mini_insta/no_posts.png'%}"
+        alt="pfp"
+      />
+      {% endif %}
+       </a> {% empty %}
+       
+      <img
+        class="post"
+        src="{% static 'img/mini_insta/no_posts.png'%}"
+        alt="pfp"
+      />
+          
+    {% endfor %}
+   
+  </div>
 </main>
 {% endblock %}
