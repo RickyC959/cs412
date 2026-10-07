@@ -13,8 +13,10 @@
     >
 
     {% for photo in post.get_all_photos %}
-    <img class="post" src="{{photo.image_url }}" alt="pfp" />
-  
+    
+    <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
+
+
     {% empty %}
     <img
       class="post"

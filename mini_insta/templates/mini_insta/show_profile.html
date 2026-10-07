@@ -22,8 +22,8 @@
 
     {% for post in profile.get_all_posts %} 
     <a href="{% url 'post' post.pk %}">
-      {% if post.get_all_photos.0.image_url %}
-        <img class="post" src="{{post.get_all_photos.0.image_url}}" alt="post" />
+      {% if post.get_all_photos.0.get_image_url %}
+        <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
         <strong>Caption: {{post.caption}} <br />
           Posted at: {{post.timestamp}}</strong
         >

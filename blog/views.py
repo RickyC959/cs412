@@ -43,7 +43,7 @@ class CreateArticleView(CreateView):
 
 
 class CreateCommentview(CreateView):
-
+    
     form_class = CreateCommentForm
     template_name = "blog/create_comment_form.html"
 

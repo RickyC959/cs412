@@ -44,9 +44,21 @@ class Photo(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
+    image_file = models.FileField(blank=True)
+
+    def get_image_url(self):
+        if self.image_url:
+            return self.image_url
+        else:
+            return self.image_file.url
+
 
     def get_url(self):
         return reverse('photo', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return f'{self.post.caption},{self.image_url}, {self.timestamp}'
+        if self.image_url: 
+            return f'{self.post.caption},URL: {self.image_url}, {self.timestamp}'
+        else:
+            return f'{self.post.caption},FILE: {self.image_file}, {self.timestamp}'
+        
