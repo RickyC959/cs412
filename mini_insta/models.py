@@ -44,7 +44,7 @@ class Photo(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
-    image_file = models.FileField(blank=True)
+    image_file = models.ImageField(blank=True)
 
     def get_image_url(self):
         if self.image_url:
