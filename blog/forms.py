@@ -6,7 +6,14 @@
 from django import forms
 from .models import *
 
-
+class UpdateArticleForm(forms.ModelForm):
+    '''A form to update a quote to the database.'''
+ 
+    class Meta:
+        '''associate this form with the Article model.'''
+        model = Article
+        fields = ['title', 'text', ]  # which fields from model should we use
+        
 class CreateArticleForm(forms.ModelForm):
     '''A form to add an Article to the database.'''
 

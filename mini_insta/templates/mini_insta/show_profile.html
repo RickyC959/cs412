@@ -17,7 +17,7 @@
     Display Name:{{profile.display_name}} <br />
     About: <br />{{profile.bio_text}}
     <br />
-
+    <a href="{% url 'update_profile' profile.pk %}"> Edit Profile</a>
     <h3>POSTS:</h3>
 
     {% for post in profile.get_all_posts %} 
@@ -35,7 +35,7 @@
         alt="pfp"
       />
       {% endif %}
-       </a> {% empty %}
+    </a> {% empty %}
        
       <img
         class="post"

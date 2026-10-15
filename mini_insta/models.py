@@ -15,6 +15,10 @@ class Profile(models.Model):
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+            '''Return the URL to display the profile.'''
+            return reverse('show_profile', kwargs={'pk': self.pk})
+
     def get_all_posts(self):
         posts = Post.objects.filter(profile=self)
         return posts

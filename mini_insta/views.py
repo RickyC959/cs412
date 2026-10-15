@@ -2,7 +2,7 @@
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: all the views that are part of this app
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView 
 from .models import *
 from .forms import * 
 from django.urls import reverse
@@ -65,3 +65,7 @@ class CreatePostView(CreateView):
             Photo.objects.create(post=post, image_file=file)
 
         return super().form_valid(form)
+class UpdateProfileView(UpdateView):
+    model= Profile
+    form_class= UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'
