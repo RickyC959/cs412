@@ -98,3 +98,29 @@ class UpdatePostView(UpdateView):
     form_class = UpdatePostForm
     template_name='mini_insta/update_post_form.html'
 
+class ShowFollowersDetailView(DetailView):
+    model=Profile
+    template_name= 'mini_insta/show_followers.html'
+    context_object_name='followers'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        pk = pk = self.kwargs('pk')
+        profile= Profile.objects.get(pk=pk)
+        context["follower"] = profile.get_followers()
+        return context
+    
+
+class ShowFollowingDetailView(DetailView):
+    model=Profile
+    template_name= 'mini_insta/show_following.html'
+    context_object_name='following'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        profile= Profile.objects.get(pk=pk)
+
+        context["following"] = profile.get_following()
+        return context
+    
+

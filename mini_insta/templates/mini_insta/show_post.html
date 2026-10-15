@@ -6,17 +6,12 @@
 
 <main>
   <div class="profile">
-
-    <strong
-      >Caption: {{post.caption}} <br />
-      Posted at: {{post.timestamp}}</strong
-    >
-
-    {% for photo in post.get_all_photos %}
     
+    {% for photo in post.get_all_photos %}
+      
     <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
 
-    
+      
     {% empty %}
     <img
       class="post"
@@ -24,10 +19,25 @@
       alt="pfp"
     />
     {% endfor %}
+    
+      {%if post.get_num_likes != 0%}
+    <h5> {{post.get_num_likes}} likes</h5>
+    {% endif %}
+    <strong>Caption: {{post.caption}} </strong>
+    <br />
+    <div>
+      {% for comment in post.get_all_comments %}
+
+      <p>{{comment.profile.username}}: {{comment.text}} </p> <br>
+
+      {% empty %}
+    <p>No comments yet</p>
+      {% endfor %}
+    </div>
     <a href="{% url 'update_post' post.pk%}">Update</a>
     <a href="{% url 'delete_post' post.pk%}">Delete</a>
 
   </div>
-  
+  <a href="{% url 'show_profile' post.profile.pk %}">Back to profile</a>
 </main>
 {% endblock %}

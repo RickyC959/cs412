@@ -17,6 +17,9 @@
     Display Name:{{profile.display_name}} <br />
     About: <br />{{profile.bio_text}}
     <br />
+    <div>{{profile.get_num_posts}} Posts</div>
+    <div>{{profile.get_num_followers}} followers</div>
+    <div>{{profile.get_num_following}} following</div>
     <a href="{% url 'update_profile' profile.pk %}"> Edit Profile</a>
     <h3>POSTS:</h3>
 
@@ -33,9 +36,10 @@
         class="post"
         src="{% static 'img/mini_insta/no_posts.png'%}"
         alt="pfp"
-      />
+        />
       {% endif %}
-    </a> {% empty %}
+    </a> 
+    {% empty %}
        
       <img
         class="post"

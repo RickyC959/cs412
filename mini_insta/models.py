@@ -15,6 +15,29 @@ class Profile(models.Model):
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
 
+    def get_followers(self):
+            
+        follower_records = Follower.objects.filter(profile=self)
+        followers_list = [record.follower_profile for record in follower_records]
+        
+        return followers_list
+    
+    def get_num_followers(self):
+        follower_records = Follower.objects.filter(profile=self)
+
+        return len(follower_records)
+
+    def get_following(self):
+        following_records = Follower.objects.filter(follower_profile=self)
+        following_list = [record.profile for record in following_records]
+        return following_list
+
+    def get_num_following(self):
+        following_records = Follower.objects.filter(follower_profile=self)
+
+        return len(following_records)
+
+
     def get_absolute_url(self):
             '''Return the URL to display the profile.'''
             return reverse('show_profile', kwargs={'pk': self.pk})
@@ -23,14 +46,34 @@ class Profile(models.Model):
         posts = Post.objects.filter(profile=self)
         return posts
 
+    def get_num_posts(self):
+        return len(Post.objects.filter(profile=self))
+
     def __str__(self):
         return f'{self.username}, {self.display_name}'
 
+class Follower(models.Model):
+    profile = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="profile")
+    follower_profile = models.ForeignKey(Profile,on_delete=models.CASCADE, related_name= "follower_profile")
+    timestamp = models.DateTimeField(auto_now=True)
+
+    
+    def __str__(self):
+        return f'{self.follower_profile} -> {self.profile}'
+   
 
 class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
+    def get_likes(self):
+        return Like.objects.filter(post=self)
+    
+    def get_num_likes(self):
+         return len(Like.objects.filter(post=self))
+    
+    def get_all_comments(self):
+        return Comment.objects.filter(post=self)
     
     def get_absolute_url(self):
         '''Return the URL to display one instance of this model.'''
@@ -43,7 +86,22 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.profile.username}, {self.caption}, {self.timestamp}'
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=True)
 
+    def __str__(self):
+        return f'From:{self.profile} Comment:{self.text}'
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.profile.username} liked {self.post}'
 class Photo(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
