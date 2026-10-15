@@ -34,7 +34,7 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         '''Return the URL to display one instance of this model.'''
-        return reverse('post', kwargs={'pk': self.pk})
+        return reverse('show_post', kwargs={'pk': self.pk})
     
     def get_all_photos(self):
         photos = Photo.objects.filter(post=self)

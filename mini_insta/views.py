@@ -2,7 +2,7 @@
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: all the views that are part of this app
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView 
+from django.views.generic import *
 from .models import *
 from .forms import * 
 from django.urls import reverse
@@ -19,6 +19,11 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'mini_insta/show_profile.html'
     context_object_name = "profile"
+
+class UpdateProfileView(UpdateView):
+    model= Profile
+    form_class= UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'
 
 
 class PostDetailView(DetailView):
@@ -49,7 +54,7 @@ class CreatePostView(CreateView):
     def form_valid(self, form):
 
         print(form.cleaned_data)
-        pk = self.kwargs['pk']
+        pk = self.kwargs('pk')
         profile = Profile.objects.get(pk=pk)
         form.instance.profile = profile
 
@@ -65,7 +70,31 @@ class CreatePostView(CreateView):
             Photo.objects.create(post=post, image_file=file)
 
         return super().form_valid(form)
-class UpdateProfileView(UpdateView):
-    model= Profile
-    form_class= UpdateProfileForm
-    template_name = 'mini_insta/update_profile_form.html'
+
+class DeletePostView(DeleteView):
+    model = Post
+    template_name ='mini_insta/delete_post_form.html'
+    context_object_name = 'post'
+
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+
+        pk = self.kwargs['pk']
+        profile= Profile.objects.get(pk=pk)
+        context['profile']= profile
+
+        return context
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        post= Post.objects.get(pk=pk)
+        profile = post.profile
+
+        return reverse('show_profile', kwargs={'pk': profile.pk}) 
+
+class UpdatePostView(UpdateView):
+    model=Post
+    form_class = UpdatePostForm
+    template_name='mini_insta/update_post_form.html'
+

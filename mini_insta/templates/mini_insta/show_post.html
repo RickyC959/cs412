@@ -16,7 +16,7 @@
     
     <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
 
-
+    
     {% empty %}
     <img
       class="post"
@@ -24,7 +24,10 @@
       alt="pfp"
     />
     {% endfor %}
+    <a href="{% url 'update_post' post.pk%}">Update</a>
+    <a href="{% url 'delete_post' post.pk%}">Delete</a>
 
   </div>
+  
 </main>
 {% endblock %}
