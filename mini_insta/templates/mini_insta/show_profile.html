@@ -5,50 +5,49 @@
 {%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
 
 <main>
-  <div class="profile">
+  <div class="profile-header">
     {% if profile.profile_image_url %}
-    <img src="{{profile.profile_image_url}}" alt="pfp" />
+      <img class="profile-pic" src="{{profile.profile_image_url}}" alt="pfp" />
     {% else %}
-    <img src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+      <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
     {% endif %}
-    <br />
-    Username: {{ profile.username }} <br />
 
-    Display Name:{{profile.display_name}} <br />
-    About: <br />{{profile.bio_text}}
-    <br />
-    <div>{{profile.get_num_posts}} Posts</div>
-    <div>{{profile.get_num_followers}} followers</div>
-    <div>{{profile.get_num_following}} following</div>
-    <a href="{% url 'update_profile' profile.pk %}"> Edit Profile</a>
-    <h3>POSTS:</h3>
+    <div class="profile-info">
+     <h2>{{profile.username}}</h2>
 
-    {% for post in profile.get_all_posts %} 
-    <a href="{% url 'show_post' post.pk %}">
-      {% if post.get_all_photos.0.get_image_url %}
-        <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
-        <strong>Caption: {{post.caption}} <br />
-          Posted at: {{post.timestamp}}</strong
-        >
-       
-      {% else %}
-        <img
-        class="post"
-        src="{% static 'img/mini_insta/no_posts.png'%}"
-        alt="pfp"
-        />
-      {% endif %}
-    </a> 
-    {% empty %}
-       
-      <img
-        class="post"
-        src="{% static 'img/mini_insta/no_posts.png'%}"
-        alt="pfp"
-      />
-          
-    {% endfor %}
-   
+     <div class="profile-stats">
+        <div><strong>{{profile.get_num_posts}}</strong> Posts</div>
+        <div><strong>{{profile.get_num_followers}}</strong> followers</div>
+        <div><strong>{{profile.get_num_following}}</strong> following</div>
+      </div>
+
+      <strong>{{profile.display_name}}</strong>
+      <p>About: <br />{{profile.bio_text}}</p>
+
+      
+      
+      <div class="profile-actions">
+        <a href="{% url 'update_profile' profile.pk %}"> Edit Profile</a>
+      </div>
+    </div>
+  </div>
+    
+  <h3>POSTS:</h3>
+  <div class="profile-posts-grid">
+  {% for post in profile.get_all_posts %} 
+  <a href="{% url 'show_post' post.pk %}">
+    {% if post.get_all_photos.0.get_image_url %}
+      <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
+      <strong>Caption: {{post.caption}} <br />
+        Posted at: {{post.timestamp}}</strong>
+      
+    {% else %}
+      <img class="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp"/>
+    {% endif %}
+  </a> 
+  {% empty %}
+    <img class="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp" />
+  {% endfor %}
   </div>
 </main>
 {% endblock %}

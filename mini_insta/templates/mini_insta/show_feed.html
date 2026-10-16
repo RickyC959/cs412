@@ -1,0 +1,55 @@
+<!--# File: mini_insta/show_feed.html
+# Author: Ricky Cui (rcui1@bu.edu), 10/15/2026
+# Description: The html page that dispays a single users feed
+-->
+{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
+
+<main class="feed-container">
+ <div class="profile-header" style="justify-content: center;">
+   {% if profile.profile_image_url %}
+   <img class="profile-pic" style="width: 80px; height: 80px;" src="{{profile.profile_image_url}}" alt="pfp" />
+   {% else %}
+   <img class="profile-pic" style="width: 80px; height: 80px;" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+   {% endif %}
+   <h2>{{profile.display_name}}: </h2>
+ </div>
+
+{% for post in feed %}
+<div class="post-card">
+    <div class="post-card-header">
+        <p>{{post.get_profile.display_name}}</p>
+    </div>
+    <div class="post-card-image">
+        {% for photo in post.get_all_photos %}
+        <a href="{% url 'show_profile' profile.pk %}">
+            <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
+        </a>
+        {% empty %}
+            <img
+            class="post"
+            src="{% static 'img/mini_insta/no_posts.png'%}"
+            alt="pfp"
+            />
+        {% endfor %}
+    </div>
+    <div class="post-card-body">
+      {%if post.get_num_likes != 0%}
+        <div class="post-card-likes"> {{post.get_num_likes}} likes</div>
+    {% endif %}
+    <div class="post-card-caption"> <strong>Caption: {{post.caption}} </strong></div>
+    
+    <div class="post-card-comments">
+      {% for comment in post.get_all_comments %}
+      <p><Strong>{{comment.profile.username}}</Strong>: {{comment.text}} </p> <br>
+      {% empty %}
+      <p>No comments yet</p>
+      {% endfor %}
+    </div>
+    </div>
+  </div>
+  {% empty %}
+  <p style="text-align: center;"> Follow someone to get a feed</p>
+{%endfor%}
+
+</main> 
+{% endblock %}

@@ -4,40 +4,44 @@
 -->
 {%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
 
-<main>
-  <div class="profile">
-    
-    {% for photo in post.get_all_photos %}
-      
-    <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
-
-      
-    {% empty %}
-    <img
-      class="post"
-      src="{% static 'img/mini_insta/no_posts.png'%}"
-      alt="pfp"
-    />
-    {% endfor %}
-    
-      {%if post.get_num_likes != 0%}
-    <h5> {{post.get_num_likes}} likes</h5>
-    {% endif %}
-    <strong>Caption: {{post.caption}} </strong>
-    <br />
-    <div>
-      {% for comment in post.get_all_comments %}
-
-      <p>{{comment.profile.username}}: {{comment.text}} </p> <br>
-
+<main class="feed-container">
+  <div class="post-card">
+    <div class="post-card-image">
+      {% for photo in post.get_all_photos %}
+      <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
       {% empty %}
-    <p>No comments yet</p>
+      <img
+        class="post"
+        src="{% static 'img/mini_insta/no_posts.png'%}"
+        alt="pfp"
+      />
       {% endfor %}
     </div>
-    <a href="{% url 'update_post' post.pk%}">Update</a>
-    <a href="{% url 'delete_post' post.pk%}">Delete</a>
-
+    
+    <div class="post-card-body">
+      {%if post.get_num_likes != 0%}
+      <div class="post-card-likes"> {{post.get_num_likes}} likes</div>
+      {% endif %}
+      <div class="post-card-caption"><strong>Caption: {{post.caption}} </strong></div>
+      <br />
+      
+      <div class="post-card-comments">
+        {% for comment in post.get_all_comments %}
+        <p><strong>{{comment.profile.username}}</strong>: {{comment.text}} </p> <br>
+        {% empty %}
+        <p>No comments yet</p>
+        {% endfor %}
+      </div>
+      
+      <div class="post-actions">
+        <a class="btn btn-secondary" href="{% url 'update_post' post.pk%}">Update</a>
+        <a class="btn btn-danger" href="{% url 'delete_post' post.pk%}">Delete</a>
+      </div>
+    </div>
   </div>
-  <a href="{% url 'show_profile' post.profile.pk %}">Back to profile</a>
+  
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a class="btn btn-primary" href="{% url 'show_profile' post.profile.pk %}">Back to profile</a>
+  </div>
 </main>
 {% endblock %}

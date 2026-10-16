@@ -1,6 +1,8 @@
 # File: mini_insta/views.py
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: all the views that are part of this app
+from typing import Any
+
 from django.shortcuts import render
 from django.views.generic import *
 from .models import *
@@ -105,7 +107,7 @@ class ShowFollowersDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        pk = pk = self.kwargs('pk')
+        pk = self.kwargs['pk']
         profile= Profile.objects.get(pk=pk)
         context["follower"] = profile.get_followers()
         return context
@@ -118,9 +120,20 @@ class ShowFollowingDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
         profile= Profile.objects.get(pk=pk)
 
         context["following"] = profile.get_following()
         return context
-    
 
+class ShowFeedView(DetailView):
+    model=Profile
+    template_name='mini_insta/show_feed.html'
+    context_object_name='profile'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        context["feed"] = profile.get_post_feed()
+        return context

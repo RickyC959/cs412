@@ -1,5 +1,6 @@
 /* File: static/mini_insta.css
- Author: Ricky Cui (rcui1@bu.edu), 9/29/2026
+   Author: Ricky Cui (rcui1@bu.edu)
+   Done with help of AI 
 */
 
 /* ==========================================================================
@@ -23,6 +24,11 @@ body {
   min-height: 100vh;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* ==========================================================================
    Header & Footer
    ========================================================================== */
@@ -38,7 +44,7 @@ header {
 
 header h1 {
   font-size: 2rem;
-  font-style: italic; /* Mimics a stylized brand logo */
+  font-style: italic;
   font-weight: 700;
   color: #262626;
 }
@@ -47,17 +53,18 @@ footer {
   background-color: #ffffff;
   border-top: 1px solid #dbdbdb;
   padding: 1.5rem;
-  text-align: center;
-  margin-top: auto; /* Pushes footer to the bottom */
+  margin-top: auto;
 }
 
-footer li {
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   list-style-type: none;
 }
 
 footer a {
-  text-decoration: none;
-  color: #0095f6; /* Classic social media blue */
+  color: #0095f6;
   font-weight: 600;
 }
 
@@ -66,142 +73,243 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   Main Layout & Typography
+   Main Layout Container
    ========================================================================== */
-main,
-h2 {
-  max-width: 935px; /* Standard wide container size */
+main {
+  max-width: 935px;
   margin: 2rem auto;
   padding: 0 1rem;
   width: 100%;
 }
 
-h2 {
-  text-align: center;
-  font-weight: 400;
-  font-size: 1.75rem;
-  color: #8e8e8e;
-  margin-bottom: 1.5rem;
+.feed-container {
+  max-width: 600px;
 }
 
 /* ==========================================================================
-   Show All Profiles (Grid View)
+   Buttons & Action Layouts
+   ========================================================================== */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #0095f6;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background-color: #00376b;
+}
+
+.btn-secondary {
+  background-color: #efefef;
+  color: #262626;
+}
+.btn-secondary:hover {
+  background-color: #dbdbdb;
+}
+
+.btn-danger {
+  background-color: #ed4956;
+  color: #ffffff;
+}
+.btn-danger:hover {
+  background-color: #c9302c;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+.profile-actions {
+  margin: 15px 0;
+}
+
+/* ==========================================================================
+   Profile Directory Layout (All Profiles)
    ========================================================================== */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 20px;
 }
 
-.profile {
+.profile-card {
   background-color: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 20px;
   text-align: center;
+}
+
+.profile-card .profile-pic {
+  margin-top: 15px;
+}
+
+/* ==========================================================================
+   Profile Header Layout (Single Profile)
+   ========================================================================== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #dbdbdb;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #dbdbdb;
+  flex-shrink: 0;
+}
+
+.profile-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.profile div {
+.profile-info h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 1.5rem;
   margin-bottom: 1rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.profile a {
-  display: inline-block;
-  margin-top: auto;
-}
-
-/* Profile Image in the Grid */
-.profile img {
-  width: 200px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #efefef;
-  transition: transform 0.2s ease;
-}
-
-.profile img:hover {
-  transform: scale(1.05);
-}
-
-/* Hide the <hr> since the article border creates enough separation */
-.profile hr {
-  display: none;
-}
-
-.profile img.post {
-  width: auto;
-  max-width: 500px;
-  height: auto;
-  aspect-ratio: 1 / 1; /* Forces a perfect square */
-  object-fit: cover;
-  border-radius: 4px; /* Overrides the 50% circle rule from 'article img' */
-  border: 1px solid #efefef;
-}
-
-.profile img.post:hover {
-  transform: none;
 }
 
 /* ==========================================================================
-   Show Single Profile
+   Profile Post Grid (3-Column)
    ========================================================================== */
-main:not(.grid-container) {
+.profile-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 100%;
+}
+
+.profile-posts-grid a {
+  display: block;
+  aspect-ratio: 1 / 1;
+  background-color: #efefef;
+  overflow: hidden;
+}
+
+.profile-posts-grid img.post {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.2s ease;
+}
+
+.profile-posts-grid a:hover img.post {
+  filter: brightness(0.85);
+}
+
+/* ==========================================================================
+   Post Cards (Feed & Single Post)
+   ========================================================================== */
+.post-card {
   background-color: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
-  padding: 3rem 2rem;
-  text-align: center;
-  max-width: 600px;
-  font-size: 1.1rem;
+  margin: 0 auto 2rem auto;
+  max-width: 470px;
+  display: flex;
+  flex-direction: column;
 }
 
-main:not(.grid-container) img.profile-pic {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 4px solid #efefef;
-  margin-top: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.post-card-header {
+  padding: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #efefef;
 }
+
+.post-card-image img.post {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.post-card-body {
+  padding: 14px;
+}
+.post-card-likes {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.post-card-caption {
+  margin-bottom: 8px;
+}
+.post-card-comments {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+.post-card-comments p {
+  margin-bottom: 4px;
+}
+
 /* ==========================================================================
-   Forms & Inputs (Create Post Form)
+   Form Cards
    ========================================================================== */
+.form {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  max-width: 500px;
+  margin: 3rem auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+.form h1 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
 }
 
 form table {
   width: 100%;
-  border-collapse: collapse;
   margin-bottom: 1.5rem;
+  text-align: left;
 }
-
 form th {
   text-align: left;
   padding-bottom: 0.5rem;
-  color: #262626;
-  font-weight: 600;
   width: 100px;
 }
-
 form td {
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 }
 
-/* Style the input boxes and text areas generated by Django */
 form input[type="text"],
 form input[type="url"],
 form textarea {
@@ -211,49 +319,19 @@ form textarea {
   border-radius: 4px;
   background-color: #fafafa;
   font-family: inherit;
-  font-size: 0.95rem;
-  color: #262626;
 }
 
 form textarea {
   resize: vertical;
   min-height: 100px;
 }
-
 form input:focus,
 form textarea:focus {
   outline: none;
   border-color: #a8a8a8;
 }
-
-/* Style the Submit button */
-form input[type="submit"] {
-  background-color: #0095f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
+.form .btn {
   width: 100%;
-  transition: background-color 0.2s ease;
-}
-
-form input[type="submit"]:hover {
-  background-color: #00376b;
-}
-
-/* Style the Cancel Link */
-form a {
-  display: inline-block;
-  margin-top: 1rem;
-  color: #ed4956; /* Instagram red for cancel/delete actions */
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-form a:hover {
-  text-decoration: underline;
+  margin-top: 10px;
+  box-sizing: border-box;
 }

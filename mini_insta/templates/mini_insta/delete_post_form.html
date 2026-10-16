@@ -1,31 +1,23 @@
 <!--
 File: mini_insta/delete_post_form.html
 Author: Ricky Cui (rcui1@bu.edu), 10/6/2026
-Description: Form to create a post
-
+Description: Form to delete a post
 -->
-
 {% extends 'mini_insta/base.html'%} {% block content%}
 <div class="form">
-<h1>Delete Post</h1>
-
+  <h1>Delete Post</h1>
   
   <h3>Are you sure you would like to delete this post?</h3>
-    <p>
-    {{post}}
-    </p>
+  <p>{{post}}</p>
  
- 
-    <form method='POST'>
-        {% csrf_token %}
-        <input type='submit' value="Delete">
-    </form>
+  <form method='POST'>
+    {% csrf_token %}
+    <input class="btn btn-danger" type='submit' value="Delete">
+  </form>
 
-    <form action="{% url 'post' post.pk %}" method='GET' >
-        {% csrf_token %}
-        <input type='submit' value="Cancel">
-    </form>
- 
-
+  <form action="{% url 'post' post.pk %}" method='GET' >
+    {% csrf_token %}
+    <input class="btn btn-secondary" type='submit' value="Cancel">
+  </form>
 </div>
 {% endblock %}

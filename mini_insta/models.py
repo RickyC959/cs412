@@ -15,6 +15,10 @@ class Profile(models.Model):
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
 
+    def get_post_feed(self):
+
+        return Post.objects.filter(profile__in=self.get_following()).order_by('-timestamp')
+
     def get_followers(self):
             
         follower_records = Follower.objects.filter(profile=self)
@@ -24,7 +28,6 @@ class Profile(models.Model):
     
     def get_num_followers(self):
         follower_records = Follower.objects.filter(profile=self)
-
         return len(follower_records)
 
     def get_following(self):
@@ -34,7 +37,6 @@ class Profile(models.Model):
 
     def get_num_following(self):
         following_records = Follower.objects.filter(follower_profile=self)
-
         return len(following_records)
 
 
@@ -66,6 +68,8 @@ class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
+    def get_profile(self):
+        return self.profile
     def get_likes(self):
         return Like.objects.filter(post=self)
     

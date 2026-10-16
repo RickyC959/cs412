@@ -6,16 +6,16 @@
 <h2>All profiles</h2>
 <main class="grid-container">
   {% for profile in profiles%}
-  <div class="profile">
+  <div class="profile-card">
     <div>
       Username: {{ profile.username }} <br />
       Display Name: {{profile.display_name}}
     </div>
     <a href="{% url 'show_profile' profile.pk %}">
       {% if profile.profile_image_url %}
-      <img src="{{profile.profile_image_url}}" alt="pfp" />
+      <img class="profile-pic" src="{{profile.profile_image_url}}" alt="pfp" />
       {% else %}
-      <img src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+      <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
       {% endif %}
     </a>
     <br />
