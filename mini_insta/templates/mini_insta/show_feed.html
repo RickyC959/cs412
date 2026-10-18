@@ -17,6 +17,11 @@
 {% for post in feed %}
 <div class="post-card">
     <div class="post-card-header">
+        {% if post.profile.profile_image_url %}
+          <img class="profile-pic" style="width: 40px; height: 40px;" src="{{post.profile.profile_image_url}}" alt="pfp" />
+        {% else %}
+          <img class="profile-pic" style="width: 40px; height: 40px;" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+        {% endif %}
         <p>{{post.get_profile.display_name}}</p>
     </div>
     <div class="post-card-image">

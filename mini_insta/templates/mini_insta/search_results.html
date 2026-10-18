@@ -1,0 +1,61 @@
+<!--
+File: mini_insta/search_results.html
+Author: Ricky Cui (rcui1@bu.edu), 10/16/2026
+Description: Form to display search results
+-->
+{% extends 'mini_insta/base.html'%} {% block content%} {% load static %}
+
+<main class="feed-container">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h2>Search Results for "{{ query }}"</h2>
+    <br>
+    <a class="btn btn-secondary" href="{% url 'search' profile.pk %}">New Search</a>
+  </div>
+
+  <h3 style="margin-bottom: 1rem; text-align: center;">Profiles</h3>
+  {% if profiles %}
+    <div class="grid-container" style="margin-bottom: 3rem;">
+      {% for p in profiles %}
+        <div class="profile-card">
+          <div>
+            <strong>{{ p.username }}</strong> <br />
+            Display Name: {{ p.display_name }}
+          </div>
+          <a href="{% url 'show_profile' p.pk %}">
+            {% if p.profile_image_url %}
+            <img class="profile-pic" src="{{p.profile_image_url}}" alt="pfp" />
+            {% else %}
+            <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+            {% endif %}
+          </a>
+          <p style="margin-top: 10px; font-size: 0.9rem;">{{p.bio_text}}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="text-align: center; margin-bottom: 3rem;">No profiles matched your search.</p>
+  {% endif %}
+
+  <h3 style="margin-bottom: 1rem; text-align: center;">Posts</h3>
+  {% if posts %}
+    {% for post in posts %}
+      <div class="post-card">
+        <div class="post-card-header">
+          <p>{{ post.profile.display_name }}</p>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-caption">
+            <strong>Caption: {{ post.caption }}</strong>
+          </div>
+          <div style="margin-top: 15px;">
+             <a class="btn btn-primary" href="{% url 'show_post' post.pk %}">View Post</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align: center;">No posts matched your search.</p>
+  {% endif %}
+
+</main>
+{% endblock %}

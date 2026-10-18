@@ -137,3 +137,46 @@ class ShowFeedView(DetailView):
         profile = Profile.objects.get(pk=pk)
         context["feed"] = profile.get_post_feed()
         return context
+class SearchView(ListView):
+    template_name='mini_insta/search_results.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'query' not in self.request.GET:
+            pk = self.kwargs['pk']
+            profile = Profile.objects.get(pk = pk)
+            return render(request, 'mini_insta/search.html', {'profile': profile})
+        
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        
+        query = self.request.GET.get('query')
+        if query:
+            return Post.objects.filter(caption__icontains=query)
+        
+        return Post.objects.none()
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('query')
+
+        pk = self.kwargs["pk"]
+        context["profile"] = Profile.objects.get(pk=pk)
+        context["query"] = query
+        context['posts'] = self.get_queryset()
+
+        if query:
+            user = Profile.objects.filter(username__icontains=query)
+            name = Profile.objects.filter(display_name__icontains=query)
+            bio  = Profile.objects.filter(bio_text__icontains=query)
+
+            context['profiles'] = (user | name | bio).distinct()
+        else:
+            context['profiles'] = Profile.objects.none()
+            
+        return context
+
+    
+
+    
