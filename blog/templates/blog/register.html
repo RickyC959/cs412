@@ -1,0 +1,20 @@
+
+{% extends 'blog/base.html' %}
+
+{% block content  %}
+
+<h1> Register for a new account</h1>
+<form action="{% url 'register' %}" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="submit">
+
+    {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{request.GET.next}}">
+    {% else %}
+    <input type="hidden" name="next" value="{% url 'show_all'%}">
+    {% endif %}
+</form>
+
+
+{% endblock %}

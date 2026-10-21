@@ -4,18 +4,27 @@
 
 import random
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.views.generic import *
 from django.urls import reverse
 from .models import *
 from .forms import *
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 class ShowAllView(ListView):
 
     model = Article
     template_name = "blog/show_all.html"
     context_object_name = "articles"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            print(f'ShowAllView.dispatch(): request.user={request.user}')
+        else:
+            print(f'ShowAllView.dispatch(): not logged in')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ArticleView(DetailView):
@@ -36,10 +45,22 @@ class RandomArticleView(DetailView):
         return article
 
 
-class CreateArticleView(CreateView):
+class CreateArticleView(LoginRequiredMixin, CreateView):
 
     form_class = CreateArticleForm
     template_name = "blog/create_article_form.html"
+
+    def get_login_url(self):
+        return reverse('login')
+
+    def form_valid(self, form):
+        print(f'CreateArticleViewform_valid(): {form.cleaned_data}')
+
+        user = self.request.user
+        print(f'CreateArticleViewform_valid():{user}')
+        form.instance.user = user
+        return super().form_valid(form)
+    
 
 class UpdateArticleView(UpdateView):
     '''A view to update an Article and save it to the database.'''
@@ -107,5 +128,13 @@ class DeleteCommentView(DeleteView):
         
         # reverse to show the article page
         return reverse('article', kwargs={'pk':article.pk})
- 
- 
+
+class UserRegistrationView(CreateView):
+    template_name = 'blog/register.html'
+    form_class = UserCreationForm
+    model = User
+
+    def get_success_url(self):
+
+
+        return reverse('login')
