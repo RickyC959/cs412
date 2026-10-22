@@ -135,6 +135,4 @@ class UserRegistrationView(CreateView):
     model = User
 
     def get_success_url(self):
-
-
         return reverse('login')

@@ -1,0 +1,25 @@
+<!--
+File: mini_insta/login.html
+Author: Ricky Cui (rcui1@bu.edu), 10/21/2026
+Description: Form to login
+-->
+{% extends 'mini_insta/base.html'%} {% block content%}
+<div class="form">
+    <h1> Login to your account </h1>
+    <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Login">
+
+        {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{request.GET.next}}">
+        {% else %}
+        <input type="hidden" name="next" value="{% url 'show_profile'%}">
+        {% endif %}
+    </form>
+
+    <hr>
+    Dont have an account? LOL TOO BAD
+    {% comment %} <a href="{% url 'register' %}"> Register Here</a> {% endcomment %}
+</div>
+{% endblock %}

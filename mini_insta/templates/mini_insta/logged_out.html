@@ -1,0 +1,21 @@
+<!--
+File: mini_insta/logout.html
+Author: Ricky Cui (rcui1@bu.edu), 10/21/2026
+Description: Logout Confirmation page
+-->
+{% extends 'mini_insta/base.html'%} {% block content%}
+<div class="form">
+    <h1> You have Successfully logged out </h1>
+
+    <p>click here to log back in</p>
+
+    <form action="{% url 'login' %}" method='GET' >
+        {% csrf_token %}
+        <input class="btn btn-secondary" type='submit' value="Login">
+    </form>
+
+    <hr>
+    Want to make a new account? TOO BAD AHAHAHAHHAHAHA LOOOOL...    U THOUGHT!!!
+    {% comment %} <a href="{% url 'register' %}"> Register Here</a> {% endcomment %}
+</div>
+{% endblock %}

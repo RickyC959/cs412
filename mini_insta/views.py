@@ -24,7 +24,7 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'mini_insta/show_profile.html'
     context_object_name = "profile"
-
+    
     def get_object(self):
         profile = Profile.objects.get(user = self.request.user)
         return profile
@@ -34,6 +34,9 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
     form_class= UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
 
+    def get_login_url(self):
+        return reverse('login')
+    
     def get_object(self):
         user = Profile.objects.get(user = self.request.user)
         return user
@@ -53,6 +56,9 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CreatePostForm
     template_name = 'mini_insta/create_post_form.html'
+
+    def get_login_url(self):
+        return reverse('login')
 
     def get_success_url(self):
         return reverse('show_profile')
@@ -93,6 +99,8 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
     template_name ='mini_insta/delete_post_form.html'
     context_object_name = 'post'
 
+    def get_login_url(self):
+        return reverse('login')
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         profile= Profile.objects.get(user = self.request.user)
@@ -106,6 +114,9 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
     model=Post
     form_class = UpdatePostForm
     template_name='mini_insta/update_post_form.html'
+
+    def get_login_url(self):
+        return reverse('login')
 
 class ShowFollowersDetailView(DetailView):
     model=Profile

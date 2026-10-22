@@ -5,6 +5,7 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 from .views import *
 from .forms import *
 
@@ -22,6 +23,9 @@ urlpatterns = [
     path('profile/following', ShowFollowingDetailView.as_view(), name="show_following"),
     path('profile/feed', ShowFeedView.as_view(), name="show_feed"),
     path('profile/search',SearchView.as_view(), name="search"),
+    #authloging
+    path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name="login"),
+    path('logout/', auth_views.LogoutView.as_view(template_name='mini_insta/logged_out.html', ), name="logout"),
     
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
