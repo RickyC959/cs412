@@ -16,7 +16,7 @@ class Profile(models.Model):
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    
     def get_post_feed(self):
 
         return Post.objects.filter(profile__in=self.get_following()).order_by('-timestamp')
@@ -83,7 +83,7 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         '''Return the URL to display one instance of this model.'''
-        return reverse('show_post')
+        return reverse('show_post', kwargs={'pk': self.pk})
     
     def get_all_photos(self):
         photos = Photo.objects.filter(post=self)
@@ -122,7 +122,7 @@ class Photo(models.Model):
 
 
     def get_url(self):
-        return reverse('photo')
+        return reverse('photo', kwargs={'pk': self.pk})
 
     def __str__(self):
         if self.image_url: 

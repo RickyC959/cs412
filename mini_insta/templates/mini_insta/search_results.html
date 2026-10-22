@@ -48,7 +48,7 @@ Description: Form to display search results
             <strong>Caption: {{ post.caption }}</strong>
           </div>
           <div style="margin-top: 15px;">
-             <a class="btn btn-primary" href="{% url 'show_post' %}">View Post</a>
+             <a class="btn btn-primary" href="{% url 'show_post' post.pk %}">View Post</a>
           </div>
         </div>
       </div>

@@ -18,10 +18,6 @@ class ProfileListView(ListView):
     model = Profile
     template_name = 'mini_insta/show_all_profiles.html'
     context_object_name = "profiles"
-    def get_object(self):
-        user = Profile.objects.get(user=self.request.user)
-        
-        return user
 
 
 class ProfileDetailView(DetailView):
@@ -30,8 +26,8 @@ class ProfileDetailView(DetailView):
     context_object_name = "profile"
 
     def get_object(self):
-        user = Profile.objects.get(user=self.request.user)
-        return user
+        profile = Profile.objects.get(user = self.request.user)
+        return profile
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model= Profile
@@ -39,8 +35,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'mini_insta/update_profile_form.html'
 
     def get_object(self):
-        user = Profile.objects.get(user=self.request.user)
-        
+        user = Profile.objects.get(user = self.request.user)
         return user
 
 
@@ -49,20 +44,23 @@ class PostDetailView(DetailView):
     template_name = 'mini_insta/show_post.html'
     context_object_name = "post"
 
+    def get_object(self):
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+        return post
+
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CreatePostForm
     template_name = 'mini_insta/create_post_form.html'
 
     def get_success_url(self):
-        return reverse('login')
+        return reverse('show_profile')
     
     def get_context_data(self):
-
         context = super().get_context_data()
-
-        user = self.request.user
-        profile = Profile.objects.get(user = user)
+        
+        profile = Profile.objects.get(user = self.request.user)
 
         context['profile'] = profile
         return context
@@ -70,15 +68,14 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
 
         print(form.cleaned_data)
-        user = self.request.user
 
-        profile = Profile.objects.get(user=user)
+        profile = Profile.objects.get(user = self.request.user)
         form.instance.profile = profile
 
         user = self.request.user
         form.instance.user = user
 
-        post = form.save()
+        post = super().form_valid(form)
 
         # image_url = self.request.POST['image_url']
         # if image_url:
@@ -89,29 +86,21 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         for file in files:
             Photo.objects.create(post=post, image_file=file)
 
-        return super().form_valid(form)
+        return post
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name ='mini_insta/delete_post_form.html'
     context_object_name = 'post'
 
-
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-
-        user = self.request.user
-        profile= Profile.objects.get(user=user)
+        profile= Profile.objects.get(user = self.request.user)
         context['profile']= profile
-
         return context
 
     def get_success_url(self):
-        user = self.request.user
-        post= Post.objects.get(user=user)
-        profile = post.profile
-
-        return reverse('login')
+        return reverse('show_profile') 
 
 class UpdatePostView(LoginRequiredMixin, UpdateView):
     model=Post
@@ -125,8 +114,7 @@ class ShowFollowersDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        profile= Profile.objects.get(user=user)
+        profile = Profile.objects.get(user = self.request.user)
         context["follower"] = profile.get_followers()
         return context
     
@@ -138,8 +126,7 @@ class ShowFollowingDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        profile= Profile.objects.get(user=user)
+        profile = Profile.objects.get(user = self.request.user)
 
         context["following"] = profile.get_following()
         return context
@@ -151,17 +138,18 @@ class ShowFeedView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        profile = Profile.objects.get(user = user)
+        profile = Profile.objects.get(user = self.request.user)
         context["feed"] = profile.get_post_feed()
         return context
+
+    def get_object(self):
+        return Profile.objects.get(user = self.request.user)
 class SearchView(ListView):
     template_name='mini_insta/search_results.html'
 
     def dispatch(self, request, *args, **kwargs):
         if 'query' not in self.request.GET:
-            user = self.request.user
-            profile = Profile.objects.get(user = user)
+            profile = Profile.objects.get(user = self.request.user)
             return render(request, 'mini_insta/search.html', {'profile': profile})
         
         return super().dispatch(request, *args, **kwargs)
@@ -179,8 +167,7 @@ class SearchView(ListView):
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get('query')
 
-        pk = self.kwargs["pk"]
-        context["profile"] = Profile.objects.get(user = user)
+        context["profile"] = Profile.objects.get(user = self.request.user)
         context["query"] = query
         context['posts'] = self.get_queryset()
 

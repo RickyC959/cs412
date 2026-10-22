@@ -35,7 +35,7 @@
   <h3>POSTS:</h3>
   <div class="profile-posts-grid">
   {% for post in profile.get_all_posts %} 
-  <a href="{% url 'show_post' %}">
+  <a href="{% url 'show_post' post.pk %}">
     {% if post.get_all_photos.0.get_image_url %}
       <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
       <strong>Caption: {{post.caption}} <br />
