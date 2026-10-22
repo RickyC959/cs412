@@ -23,9 +23,9 @@ Description: Form to display search results
           </div>
           <a href="{% url 'show_profile' %}">
             {% if p.profile_image_url %}
-            <img class="profile-pic" src="{{p.profile_image_url}}" alt="pfp" />
+              <img class="profile-pic" src="{{p.profile_image_url}}" alt="pfp" />
             {% else %}
-            <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+              <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
             {% endif %}
           </a>
           <p style="margin-top: 10px; font-size: 0.9rem;">{{p.bio_text}}</p>

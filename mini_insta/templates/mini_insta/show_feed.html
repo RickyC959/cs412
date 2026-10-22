@@ -2,7 +2,9 @@
 # Author: Ricky Cui (rcui1@bu.edu), 10/15/2026
 # Description: The html page that dispays a single users feed
 -->
-{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
+{%extends 'mini_insta/base.html'%} 
+{%load static%}
+{% block content %} 
 
 <main class="feed-container">
   <div class="profile-header" style="justify-content: center;">
@@ -15,24 +17,26 @@
   </div>
 
   {% for post in feed %}
-  <div class="post-card">
+    <div class="post-card">
       <div class="post-card-header">
-          {% if post.profile.profile_image_url %}
-            <img class="profile-pic" style="width: 40px; height: 40px;" src="{{post.profile.profile_image_url}}" alt="pfp" />
-          {% else %}
-            <img class="profile-pic" style="width: 40px; height: 40px;" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
-          {% endif %}
-          <p>{{post.get_profile.display_name}}</p>
+        {% if post.profile.profile_image_url %}
+          <img class="profile-pic" style="width: 40px; height: 40px;" src="{{post.profile.profile_image_url}}" alt="pfp" />
+        {% else %}
+          <img class="profile-pic" style="width: 40px; height: 40px;" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+        {% endif %}
+        <p>{{post.get_profile.display_name}}</p>
       </div>
+
       <div class="post-card-image">
         {% for photo in post.get_all_photos %}
           <a href="{% url 'show_profile' %}">
-              <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
+            <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
           </a>
         {% empty %}
           <imgclass="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp"/>
         {% endfor %}
       </div>
+
       <div class="post-card-body">
         {%if post.get_num_likes != 0%}
           <div class="post-card-likes"> {{post.get_num_likes}} likes</div>
@@ -49,7 +53,7 @@
       </div>
     </div>
     {% empty %}
-    <p style="text-align: center;"> Follow someone to get a feed</p>
+      <p style="text-align: center;"> Follow someone to get a feed</p>
   {%endfor%}
 
 </main> 

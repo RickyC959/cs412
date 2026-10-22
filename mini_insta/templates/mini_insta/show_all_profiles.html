@@ -14,9 +14,9 @@
         </div>
         <a href="{% url 'show_profile' %}">
           {% if profile.profile_image_url %}
-          <img class="profile-pic" src="{{profile.profile_image_url}}" alt="pfp" />
+            <img class="profile-pic" src="{{profile.profile_image_url}}" alt="pfp" />
           {% else %}
-          <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+            <img class="profile-pic" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
           {% endif %}
         </a>
         <br />
