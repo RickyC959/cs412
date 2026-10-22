@@ -8,6 +8,9 @@ from django.views.generic import *
 from .models import *
 from .forms import * 
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -15,6 +18,10 @@ class ProfileListView(ListView):
     model = Profile
     template_name = 'mini_insta/show_all_profiles.html'
     context_object_name = "profiles"
+    def get_object(self):
+        user = Profile.objects.get(user=self.request.user)
+        
+        return user
 
 
 class ProfileDetailView(DetailView):
@@ -22,10 +29,19 @@ class ProfileDetailView(DetailView):
     template_name = 'mini_insta/show_profile.html'
     context_object_name = "profile"
 
-class UpdateProfileView(UpdateView):
+    def get_object(self):
+        user = Profile.objects.get(user=self.request.user)
+        return user
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model= Profile
     form_class= UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
+
+    def get_object(self):
+        user = Profile.objects.get(user=self.request.user)
+        
+        return user
 
 
 class PostDetailView(DetailView):
@@ -33,22 +49,20 @@ class PostDetailView(DetailView):
     template_name = 'mini_insta/show_post.html'
     context_object_name = "post"
 
-class CreatePostView(CreateView):
+class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CreatePostForm
     template_name = 'mini_insta/create_post_form.html'
 
     def get_success_url(self):
-        pk = self.kwargs['pk']
-    
-        return reverse('show_profile', kwargs={'pk': pk})
+        return reverse('login')
     
     def get_context_data(self):
 
         context = super().get_context_data()
 
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        user = self.request.user
+        profile = Profile.objects.get(user = user)
 
         context['profile'] = profile
         return context
@@ -56,9 +70,13 @@ class CreatePostView(CreateView):
     def form_valid(self, form):
 
         print(form.cleaned_data)
-        pk = self.kwargs('pk')
-        profile = Profile.objects.get(pk=pk)
+        user = self.request.user
+
+        profile = Profile.objects.get(user=user)
         form.instance.profile = profile
+
+        user = self.request.user
+        form.instance.user = user
 
         post = form.save()
 
@@ -73,7 +91,7 @@ class CreatePostView(CreateView):
 
         return super().form_valid(form)
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name ='mini_insta/delete_post_form.html'
     context_object_name = 'post'
@@ -82,20 +100,20 @@ class DeletePostView(DeleteView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
 
-        pk = self.kwargs['pk']
-        profile= Profile.objects.get(pk=pk)
+        user = self.request.user
+        profile= Profile.objects.get(user=user)
         context['profile']= profile
 
         return context
 
     def get_success_url(self):
-        pk = self.kwargs['pk']
-        post= Post.objects.get(pk=pk)
+        user = self.request.user
+        post= Post.objects.get(user=user)
         profile = post.profile
 
-        return reverse('show_profile', kwargs={'pk': profile.pk}) 
+        return reverse('login')
 
-class UpdatePostView(UpdateView):
+class UpdatePostView(LoginRequiredMixin, UpdateView):
     model=Post
     form_class = UpdatePostForm
     template_name='mini_insta/update_post_form.html'
@@ -107,8 +125,8 @@ class ShowFollowersDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs['pk']
-        profile= Profile.objects.get(pk=pk)
+        user = self.request.user
+        profile= Profile.objects.get(user=user)
         context["follower"] = profile.get_followers()
         return context
     
@@ -120,8 +138,8 @@ class ShowFollowingDetailView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs['pk']
-        profile= Profile.objects.get(pk=pk)
+        user = self.request.user
+        profile= Profile.objects.get(user=user)
 
         context["following"] = profile.get_following()
         return context
@@ -133,8 +151,8 @@ class ShowFeedView(DetailView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        user = self.request.user
+        profile = Profile.objects.get(user = user)
         context["feed"] = profile.get_post_feed()
         return context
 class SearchView(ListView):
@@ -142,8 +160,8 @@ class SearchView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if 'query' not in self.request.GET:
-            pk = self.kwargs['pk']
-            profile = Profile.objects.get(pk = pk)
+            user = self.request.user
+            profile = Profile.objects.get(user = user)
             return render(request, 'mini_insta/search.html', {'profile': profile})
         
         return super().dispatch(request, *args, **kwargs)
@@ -162,7 +180,7 @@ class SearchView(ListView):
         query = self.request.GET.get('query')
 
         pk = self.kwargs["pk"]
-        context["profile"] = Profile.objects.get(pk=pk)
+        context["profile"] = Profile.objects.get(user = user)
         context["query"] = query
         context['posts'] = self.get_queryset()
 

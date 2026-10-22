@@ -32,16 +32,17 @@
         <p>No comments yet</p>
         {% endfor %}
       </div>
-      
+      {% if request.user == profile.user %}
       <div class="post-actions">
-        <a class="btn btn-secondary" href="{% url 'update_post' post.pk%}">Update</a>
-        <a class="btn btn-danger" href="{% url 'delete_post' post.pk%}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'update_post'%}">Update</a>
+        <a class="btn btn-danger" href="{% url 'delete_post'%}">Delete</a>
       </div>
+      {% endif %}
     </div>
   </div>
   
   <div style="text-align: center; margin-bottom: 2rem;">
-    <a class="btn btn-primary" href="{% url 'show_profile' post.profile.pk %}">Back to profile</a>
+    <a class="btn btn-primary" href="{% url 'show_profile' %}">Back to profile</a>
   </div>
 </main>
 {% endblock %}

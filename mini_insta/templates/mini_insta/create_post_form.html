@@ -6,7 +6,7 @@ Description: Form to create a post
 {% extends 'mini_insta/base.html'%} {% block content%}
 <div class="form">
   <h1>Create New Post</h1>
-  <form action="{% url 'create_post' profile.pk %}" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'create_post' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
       {{form.as_table}}
@@ -16,7 +16,7 @@ Description: Form to create a post
       </tr>
     </table>
     <input class="btn btn-primary" type="submit" name="submit" value="submit" />
-    <a class="btn btn-secondary" href="{% url 'show_profile' profile.pk %}">Cancel</a>
+    <a class="btn btn-secondary" href="{% url 'show_profile' %}">Cancel</a>
   </form>
 </div>
 {%endblock%}

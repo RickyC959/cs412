@@ -4,6 +4,7 @@
 
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -14,6 +15,7 @@ class Profile(models.Model):
     profile_image_url = models.URLField(blank=True)
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_post_feed(self):
 
@@ -42,7 +44,7 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
             '''Return the URL to display the profile.'''
-            return reverse('show_profile', kwargs={'pk': self.pk})
+            return reverse('show_profile')
 
     def get_all_posts(self):
         posts = Post.objects.filter(profile=self)
@@ -81,7 +83,7 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         '''Return the URL to display one instance of this model.'''
-        return reverse('show_post', kwargs={'pk': self.pk})
+        return reverse('show_post')
     
     def get_all_photos(self):
         photos = Photo.objects.filter(post=self)
@@ -120,7 +122,7 @@ class Photo(models.Model):
 
 
     def get_url(self):
-        return reverse('photo', kwargs={'pk': self.pk})
+        return reverse('photo')
 
     def __str__(self):
         if self.image_url: 

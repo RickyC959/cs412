@@ -15,7 +15,7 @@ Description: Form to delete a post
     <input class="btn btn-danger" type='submit' value="Delete">
   </form>
 
-  <form action="{% url 'show_post' post.pk %}" method='GET' >
+  <form action="{% url 'show_post'  %}" method='GET' >
     {% csrf_token %}
     <input class="btn btn-secondary" type='submit' value="Cancel">
   </form>

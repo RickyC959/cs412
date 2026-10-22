@@ -24,16 +24,18 @@
       <strong>{{profile.display_name}}</strong>
       <p>About: <br />{{profile.bio_text}}</p>
 
+      {% if request.user == profile.user %}
       <div class="profile-actions">
-        <a href="{% url 'update_profile' profile.pk %}"> Edit Profile</a>
+        <a href="{% url 'update_profile' %}"> Edit Profile</a>
       </div>
+      {% endif %}
     </div>
   </div>
     
   <h3>POSTS:</h3>
   <div class="profile-posts-grid">
   {% for post in profile.get_all_posts %} 
-  <a href="{% url 'show_post' post.pk %}">
+  <a href="{% url 'show_post' %}">
     {% if post.get_all_photos.0.get_image_url %}
       <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
       <strong>Caption: {{post.caption}} <br />

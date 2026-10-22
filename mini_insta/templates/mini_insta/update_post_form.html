@@ -6,13 +6,13 @@ Description: Form to update your post
 {% extends 'mini_insta/base.html'%} {% block content%}
 <div class="form">
   <h1>Update post</h1>
-  <form action="{% url 'update_post' post.pk %}" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'update_post' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
       {{form.as_table}}
     </table>
     <input class="btn btn-primary" type="submit" name="submit" value="submit" />
-    <a class="btn btn-secondary" href="{% url 'show_post' post.pk %}">Cancel</a>
+    <a class="btn btn-secondary" href="{% url 'show_post' %}">Cancel</a>
   </form>
 </div>
 {%endblock%}

@@ -26,7 +26,7 @@
     </div>
     <div class="post-card-image">
         {% for photo in post.get_all_photos %}
-        <a href="{% url 'show_profile' profile.pk %}">
+        <a href="{% url 'show_profile' %}">
             <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
         </a>
         {% empty %}

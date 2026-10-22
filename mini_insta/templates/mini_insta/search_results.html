@@ -9,7 +9,7 @@ Description: Form to display search results
   <div style="text-align: center; margin-bottom: 2rem;">
     <h2>Search Results for "{{ query }}"</h2>
     <br>
-    <a class="btn btn-secondary" href="{% url 'search' profile.pk %}">New Search</a>
+    <a class="btn btn-secondary" href="{% url 'search' %}">New Search</a>
   </div>
 
   <h3 style="margin-bottom: 1rem; text-align: center;">Profiles</h3>
@@ -21,7 +21,7 @@ Description: Form to display search results
             <strong>{{ p.username }}</strong> <br />
             Display Name: {{ p.display_name }}
           </div>
-          <a href="{% url 'show_profile' p.pk %}">
+          <a href="{% url 'show_profile' %}">
             {% if p.profile_image_url %}
             <img class="profile-pic" src="{{p.profile_image_url}}" alt="pfp" />
             {% else %}
@@ -48,7 +48,7 @@ Description: Form to display search results
             <strong>Caption: {{ post.caption }}</strong>
           </div>
           <div style="margin-top: 15px;">
-             <a class="btn btn-primary" href="{% url 'show_post' post.pk %}">View Post</a>
+             <a class="btn btn-primary" href="{% url 'show_post' %}">View Post</a>
           </div>
         </div>
       </div>
