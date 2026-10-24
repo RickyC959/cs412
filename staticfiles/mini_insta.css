@@ -153,3 +153,50 @@ main:not(.grid-container) img {
   margin-top: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+.auth-bar {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #8e8e8e;
+  justify-content: center;
+}
+
+.auth-bar a {
+  text-decoration: none;
+  color: #0095f6;
+  font-weight: 600;
+  margin: 0 0.25rem;
+}
+
+.auth-bar a:hover {
+  color: #00376b;
+}
+
+.logout-form {
+  display: inline;
+  margin-left: 0.5rem;
+}
+
+.logout-form.button {
+  background: none;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  color: #262626;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 120px;
+  padding: 5px 10px;
+}
+
+.logout-form button:hover {
+  background-color: #efefef;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  position: sticky;
+}

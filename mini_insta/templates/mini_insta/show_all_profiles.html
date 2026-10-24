@@ -3,8 +3,10 @@
 # Description: The html page that dispays the all the users profiles
 -->
 {%extends 'mini_insta/base.html'%} {% block content %} {% load static %}
-<h2>All profiles</h2>
+
 <main class="grid-container">
+  <h2>All profiles</h2>
+  
   {% for profile in profiles%}
     {% if request.user == profile.user %}
       <div class="profile-card">

@@ -1,8 +1,8 @@
 <!--# File: mini_insta/show_profile.html
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
-# Description: The html page that dispays a single users profiles
+# Description: The html page that displays a single user's profile
 -->
-{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
+{% extends 'mini_insta/base.html' %} {% block content %} {% load static %}
 
 <main>
   <div class="profile-header">
@@ -13,21 +13,29 @@
     {% endif %}
 
     <div class="profile-info">
-    <h2>{{profile.username}}</h2>
+      <h2>{{profile.username}}</h2>
 
-    <div class="profile-stats">
+      <div class="profile-stats">
         <div><strong>{{profile.get_num_posts}}</strong> Posts</div>
-        <div><strong>{{profile.get_num_followers}}</strong> followers</div>
-        <div><strong>{{profile.get_num_following}}</strong> following</div>
+        <div><a href="{% url 'show_followers' profile.pk %}"><strong>{{profile.get_num_followers}}</strong> followers</a></div>
+        <div><a href="{% url 'show_following' profile.pk %}"><strong>{{profile.get_num_following}}</strong> following</a></div>
       </div>
 
       <strong>{{profile.display_name}}</strong>
       <p>About: <br />{{profile.bio_text}}</p>
 
-      {% if request.user == profile.user %}
-      <div class="profile-actions">
-        <a href="{% url 'update_profile' %}"> Edit Profile</a>
-      </div>
+      {% if request.user.is_authenticated %}
+        <div class="profile-actions">
+          {% if request.user == profile.user %}
+            <a class="btn btn-secondary" href="{% url 'update_profile' %}">Edit Profile</a>
+          {% else %}
+            {% if is_following %}
+              <a class="btn btn-secondary" href="{% url 'delete_follow_profile' profile.pk %}">Unfollow</a>
+            {% else %}
+              <a class="btn btn-primary" href="{% url 'follow_profile' profile.pk %}">Follow</a>
+            {% endif %}
+          {% endif %}
+        </div>
       {% endif %}
     </div>
   </div>
@@ -35,16 +43,15 @@
   <h3>POSTS:</h3>
   <div class="profile-posts-grid">
     {% for post in profile.get_all_posts %} 
-    <a href="{% url 'show_post' post.pk %}">
-      {% if post.get_all_photos.0.get_image_url %}
-        <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
-        <strong>Caption: {{post.caption}} <br />
-          Posted at: {{post.timestamp}}</strong>
-        
-      {% else %}
-        <img class="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp"/>
-      {% endif %}
-    </a> 
+      <a href="{% url 'show_post' post.pk %}">
+        {% if post.get_all_photos.0.get_image_url %}
+          <img class="post" src="{{post.get_all_photos.0.get_image_url}}" alt="post" />
+          <strong>Caption: {{post.caption}} <br />
+            Posted at: {{post.timestamp}}</strong>
+        {% else %}
+          <img class="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp"/>
+        {% endif %}
+      </a> 
     {% empty %}
       <img class="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp" />
     {% endfor %}

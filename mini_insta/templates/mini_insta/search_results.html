@@ -21,7 +21,7 @@ Description: Form to display search results
             <strong>{{ p.username }}</strong> <br />
             Display Name: {{ p.display_name }}
           </div>
-          <a href="{% url 'show_profile' %}">
+          <a href="{% url 'show_profile' p.pk %}">
             {% if p.profile_image_url %}
               <img class="profile-pic" src="{{p.profile_image_url}}" alt="pfp" />
             {% else %}
@@ -39,19 +39,27 @@ Description: Form to display search results
   <h3 style="margin-bottom: 1rem; text-align: center;">Posts</h3>
   {% if posts %}
     {% for post in posts %}
-      <div class="post-card">
-        <div class="post-card-header">
-          <p>{{ post.profile.display_name }}</p>
-        </div>
-        <div class="post-card-body">
-          <div class="post-card-caption">
-            <strong>Caption: {{ post.caption }}</strong>
+      <a href="{% url 'show_post' post.pk %}">
+        <div class="post-card">
+          <div class="post-card-header">
+            {% if post.profile.profile_image_url %}
+            <a href="{% url 'show_profile' post.profile.pk %}">
+              <img class="profile-pic" style="width: 40px; height: 40px;" src="{{post.profile.profile_image_url}}" alt="pfp" />
+               <p>{{post.get_profile.display_name}}</p>
+            </a>
+            {% else %}
+              <img class="profile-pic" style="width: 40px; height: 40px;" src="{% static 'img/mini_insta/no_profile.jpeg'%}" alt="pfp" />
+            {% endif %}
+             
           </div>
-          <div style="margin-top: 15px;">
-             <a class="btn btn-primary" href="{% url 'show_post' post.pk %}">View Post</a>
+          <div class="post-card-body">
+            <div class="post-card-caption">
+              <strong>Caption: {{ post.caption }}</strong>
+            </div>
+
           </div>
         </div>
-      </div>
+      </a>
     {% endfor %}
   {% else %}
     <p style="text-align: center;">No posts matched your search.</p>

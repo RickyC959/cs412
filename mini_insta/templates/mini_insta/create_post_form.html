@@ -16,7 +16,7 @@ Description: Form to create a post
       </tr>
     </table>
     <input class="btn btn-primary" type="submit" name="submit" value="submit" />
-    <a class="btn btn-secondary" href="{% url 'show_profile' %}">Cancel</a>
+    <a class="btn btn-secondary" href="{% url 'show_profile' profile.pk%}">Cancel</a>
   </form>
 </div>
 {%endblock%}

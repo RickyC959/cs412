@@ -27,20 +27,22 @@
         <p>{{post.get_profile.display_name}}</p>
       </div>
 
-      <div class="post-card-image">
-        {% for photo in post.get_all_photos %}
-          <a href="{% url 'show_profile' %}">
-            <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
-          </a>
-        {% empty %}
-          <imgclass="post" src="{% static 'img/mini_insta/no_posts.png'%}" alt="pfp"/>
-        {% endfor %}
-      </div>
-
       <div class="post-card-body">
-        {%if post.get_num_likes != 0%}
-          <div class="post-card-likes"> {{post.get_num_likes}} likes</div>
+        <div class="post-card-image" style="margin-bottom: 10px;">
+          {% for photo in post.get_all_photos %}
+            <img class="post" src="{{photo.get_image_url}}" alt="pfp" />
+          {% empty %}
+            
+          {% endfor %}
+        </div>
+
+        {% if is_liked %}
+          <a class="btn btn-secondary" href="{% url 'delete_like_post' post.pk %}">Unlike</a>
+        {% else %}
+          <a class="btn btn-primary" href="{% url 'like_post' post.pk %}">Like</a>
         {% endif %}
+          
+
         <div class="post-card-caption"> <strong>Caption: {{post.caption}} </strong></div>
         
         <div class="post-card-comments">

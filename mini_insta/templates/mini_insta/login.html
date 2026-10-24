@@ -8,8 +8,9 @@ Description: Form to login
     <h1> Login to your account </h1>
     <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Login">
+        {{form.as_table}}
+        <input class="btn btn-primary" type="submit" value="Login" style="margin-bottom: 20px">
+        
 
         {% if request.GET.next %}
         <input type="hidden" name="next" value="{{request.GET.next}}">
@@ -19,7 +20,7 @@ Description: Form to login
     </form>
 
     <hr>
-    Dont have an account? LOL TOO BAD
-    {% comment %} <a href="{% url 'register' %}"> Register Here</a> {% endcomment %}
+    Dont have an account? 
+    <a class="btn btn-primary" href="{% url 'create_profile' %}" > Register Here</a>
 </div>
 {% endblock %}

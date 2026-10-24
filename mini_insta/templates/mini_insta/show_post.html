@@ -1,8 +1,8 @@
 <!--# File: mini_insta/show_post.html
 # Author: Ricky Cui (rcui1@bu.edu), 10/6/2026
-# Description: The html page that dispays a single users profiles
+# Description: The html page that displays a single post
 -->
-{%extends 'mini_insta/base.html'%} {% block content %} {%load static%}
+{% extends 'mini_insta/base.html' %} {% block content %} {% load static %}
 
 <main class="feed-container">
   <div class="post-card">
@@ -15,30 +15,42 @@
     </div>
     
     <div class="post-card-body">
-      {%if post.get_num_likes != 0%}
-        <div class="post-card-likes"> {{post.get_num_likes}} likes</div>
+      
+      <div class="post-actions">
+        {% if request.user == post.profile.user %}
+          <a class="btn btn-secondary" href="{% url 'update_post' post.pk %}">Update</a>
+          <a class="btn btn-danger" href="{% url 'delete_post' post.pk %}">Delete</a>
+        {% else %}
+          {% if is_liked %}
+            <a class="btn btn-secondary" href="{% url 'delete_like_post' post.pk %}">Unlike</a>
+          {% else %}
+            <a class="btn btn-primary" href="{% url 'like_post' post.pk %}">Like</a>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      
+      {% if post.get_num_likes %}
+        <div class="post-card-likes">{{post.get_num_likes}} likes</div>
       {% endif %}
       <div class="post-card-caption"><strong>Caption: {{post.caption}} </strong></div>
+      
       <br />
       
       <div class="post-card-comments">
         {% for comment in post.get_all_comments %}
-          <p><strong>{{comment.profile.username}}</strong>: {{comment.text}} </p> <br>
+          <p><strong>{{comment.profile.username}}</strong>: {{comment.text}}</p> <br>
         {% empty %}
           <p>No comments yet</p>
         {% endfor %}
       </div>
-      {% if request.user == post.profile.user %}
-        <div class="post-actions">
-          <a class="btn btn-secondary" href="{% url 'update_post' post.pk %}">Update</a>
-          <a class="btn btn-danger" href="{% url 'delete_post' post.pk %}">Delete</a>
-        </div>
-      {% endif %}
+
+      
     </div>
   </div>
   
   <div style="text-align: center; margin-bottom: 2rem;">
-    <a class="btn btn-primary" href="{% url 'show_profile' %}">Back to profile</a>
+    <a class="btn btn-primary" href="{% url 'show_profile' post.profile.pk %}">Back to profile</a>
   </div>
 </main>
 {% endblock %}

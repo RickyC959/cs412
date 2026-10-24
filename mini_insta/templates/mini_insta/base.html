@@ -2,7 +2,8 @@
 # Author: Ricky Cui (rcui1@bu.edu), 9/26/2026
 # Description: The base Html page that the other pages are built on top of. 
 -->
-{%load static%}
+{% load static %}
+<!DOCTYPE html>
 <html>
   <head>
     <title>Mini Insta</title>
@@ -12,36 +13,49 @@
   <body>
     <header>
       <h1>Mini Insta</h1>
-      {% if request.user.is_authenticated %}        
-        <form action="{% url 'logout' %}" method="post">
-          {% csrf_token %}
-          <button type="submit">Log Out</button>
-        </form>
-      {% else %}
-        
-        <a href="{% url 'login' %}">Log in</a>
-      {% endif %}
-<br>
-      {% if request.user.is_authenticated %}
-        Logged in user: {{ request.user }}.
-      {% else %}
-        Not logged in.
-      {% endif %}
+      <div class="auth-bar">
+        {% if request.user.is_authenticated %}
+          Logged in user: <strong>{{ request.user }}</strong>
+          <div style="display: flex; justify-content: center;">
+            <form action="{% url 'logout' %}" method="post" class="logout-form" style="width: 100px;">
+              {% csrf_token %}
+              <button class="btn btn-secondary" type="submit" style="margin-top: 10px;">Log Out</button>
+            </form>
+          </div>
+        {% else %}
+          Not logged in
+          <br>
+          {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'create_profile' %}
+            <div style="display: flex; justify-content: center;">
+              <form action="{% url 'login' %}" style=" width: 100px; padding: 10px">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Login</button>
+              </form>
+            </div>
+          
+          
+            <div style="display: flex; justify-content: center;">
+              <form action="{% url 'create_profile' %}" style="width: 140px;">
+                <button class="btn btn-primary" type="submit">Create Profile</button>
+              </form>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
     </header>
-    {% block content %} {% endblock %}
-  </body>
 
-  <footer>
-    <ul class="footer-links">
-      {% if profile %}
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+      <ul class="footer-links">
+        <li><a href="{% url 'show_all_profiles' %}">Profiles</a></li>
         {% if request.user.is_authenticated %}
           <li><a href="{% url 'show_feed' %}">Home</a></li>
           <li><a href="{% url 'create_post' %}">Create New Post</a></li>
+          <li><a href="{% url 'search' %}">Search</a></li>
         {% endif %}
-        <li><a href="{% url 'search' %}">Search</a></li>
-      {% endif %}
-      <li><a href="{% url 'show_all_profiles' %}">Profiles</a></li>
-
-    </ul>
-  </footer>
+      </ul>
+    </footer>
+  </body>
 </html>

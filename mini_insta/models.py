@@ -15,7 +15,7 @@ class Profile(models.Model):
     profile_image_url = models.URLField(blank=True)
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     
     def get_post_feed(self):
 
@@ -44,7 +44,7 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
             '''Return the URL to display the profile.'''
-            return reverse('show_profile')
+            return reverse('show_profile', kwargs={'pk': self.pk})
 
     def get_all_posts(self):
         posts = Post.objects.filter(profile=self)
@@ -119,7 +119,6 @@ class Photo(models.Model):
             return self.image_url
         else:
             return self.image_file.url
-
 
     def get_url(self):
         return reverse('photo', kwargs={'pk': self.pk})
