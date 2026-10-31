@@ -3,9 +3,7 @@ from django.db import models
 # Create your models here.
 class Voter(models.Model):
     '''
-    Store/represent the data from one runner at the Chicago Marathon 2023.
-    BIB,First Name,Last Name,CTZ,City,State,Gender,Division,
-    Place Overall,Place Gender,Place Division,Start TOD,Finish TOD,Finish,HALF1,HALF2
+    Store/represent the data from one voter.
     '''
 
     # identification
@@ -29,7 +27,7 @@ class Voter(models.Model):
  
     def __str__(self):
         '''Return a string representation of this model instance.'''
-        return f'{self.voter_id} {self.first_name} {self.zip_code}  {self.voter_score}'
+        return f'{self.voter_id} {self.first_name} {self.last_name}'
 
 def load_data():
     '''Function to load data records from CSV file into Django model instances.'''
@@ -38,8 +36,6 @@ def load_data():
     f = open(filename)
     f.readline() # discard headers
 
-    print('hi')
- 
     for line in f:
         fields = line.split(',')
        
@@ -66,11 +62,8 @@ def load_data():
             )
         
             voter.save() # commit to database
-            #print(f'Created result: {result}')
             
         except:
             print(f"Skipped: {fields}")
     
     print(f'Done. Created {len(Voter.objects.all())} Results.')
-
- 

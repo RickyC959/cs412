@@ -1,0 +1,30 @@
+<!--# File: voter_analytics/graphs.html
+# Author: Ricky Cui (rcui1@bu.edu), 10/29/2026
+# Description: Page to display aggregate voter graphs with search filter.
+-->
+{% extends 'voter_analytics/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Voter Analytics Graphs</h1>
+
+    <div class="row">
+        {% include "voter_analytics/search.html" %}
+    </div>
+
+    <!-- Graph 1: Year of birth distribution -->
+    <div class="row">
+        {{ graph_div_years|safe }}
+    </div>
+
+    <!-- Graph 2: Party affiliation distribution -->
+    <div class="row">
+        {{ graph_div_party|safe }}
+    </div>
+
+    <!-- Graph 3: Past election participation -->
+    <div class="row">
+        {{ graph_div_elections|safe }}
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,9 @@
 from django.urls import path
-from . import views 
-import plotly
-import plotly.graph_objs as go
- 
+from .views import VoterListView, VoterDetailView, VoterGraphsView
+
 urlpatterns = [
     # map the URL (empty string) to the view
-	#path(r'', views.ResultsListView.as_view(), name='home'),
-    
+    path('', VoterListView.as_view(), name='voters'),
+    path('voter/<int:pk>', VoterDetailView.as_view(), name='voter'),
+    path('graphs', VoterGraphsView.as_view(), name='graphs'),
 ]
