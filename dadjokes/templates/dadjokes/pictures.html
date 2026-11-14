@@ -1,0 +1,18 @@
+{% extends 'dadjokes/base.html' %} {% block content %}
+<h1>All Silly Pictures</h1>
+{% for picture in pictures %}
+<div style="margin-bottom: 20px">
+  <a href="{% url 'picture_detail' picture.pk %}">
+    <img
+      src="{{ picture.image_url }}"
+      alt="Silly picture"
+      style="max-width: 300px"
+    />
+  </a>
+  <p>
+    <em>Contributed by {{ picture.contributor }} ({{ picture.timestamp }})</em>
+  </p>
+</div>
+{% empty %}
+<p>No pictures yet.</p>
+{% endfor %} {% endblock %}

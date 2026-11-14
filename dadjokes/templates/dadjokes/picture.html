@@ -1,0 +1,11 @@
+{% extends 'dadjokes/base.html' %} {% block content %}
+<h1>Picture #{{ picture.pk }}</h1>
+<img
+  src="{{ picture.image_url }}"
+  alt="Silly picture"
+  style="max-width: 450px"
+/>
+<p>
+  <em>Contributed by {{ picture.contributor }} on {{ picture.timestamp }}</em>
+</p>
+{% endblock %}
