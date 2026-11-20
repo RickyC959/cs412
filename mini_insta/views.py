@@ -5,13 +5,16 @@ from typing import Any
 
 from django.shortcuts import redirect, render
 from django.views.generic import *
-from .models import *
-from .forms import * 
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login
+from rest_framework import generics
+from .models import *
+from .forms import *
+from .serializers import ProfileSerializer, PostSerializer
+
 # Create your views here.
 
 
@@ -25,18 +28,19 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'mini_insta/show_profile.html'
     context_object_name = "profile"
-    
+
     def get_object(self):
         if 'pk' in self.kwargs:
             return Profile.objects.get(pk=self.kwargs['pk'])
-        return Profile.objects.get(user = self.request.user)
+        return Profile.objects.get(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         target_profile = self.get_object()
-        
+
         if self.request.user.is_authenticated:
-            logged_in_profile = Profile.objects.filter(user=self.request.user).first()
+            logged_in_profile = Profile.objects.filter(
+                user=self.request.user).first()
             if logged_in_profile:
                 context['is_following'] = Follower.objects.filter(
                     profile=target_profile,
@@ -44,16 +48,17 @@ class ProfileDetailView(DetailView):
                 ).exists()
         return context
 
+
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
-    model= Profile
-    form_class= UpdateProfileForm
+    model = Profile
+    form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
 
     def get_login_url(self):
         return reverse('login')
-    
+
     def get_object(self):
-        user = Profile.objects.get(user = self.request.user)
+        user = Profile.objects.get(user=self.request.user)
         return user
 
 
@@ -70,15 +75,17 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
-        
+
         if self.request.user.is_authenticated:
-            logged_in_profile = Profile.objects.filter(user=self.request.user).first()
+            logged_in_profile = Profile.objects.filter(
+                user=self.request.user).first()
             if logged_in_profile:
                 context['is_liked'] = Like.objects.filter(
                     post=post,
                     profile=logged_in_profile
                 ).exists()
         return context
+
 
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
@@ -90,11 +97,11 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
-    
+
     def get_context_data(self):
         context = super().get_context_data()
-        
-        profile = Profile.objects.get(user = self.request.user)
+
+        profile = Profile.objects.get(user=self.request.user)
 
         context['profile'] = profile
         return context
@@ -103,7 +110,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
         print(form.cleaned_data)
 
-        profile = Profile.objects.get(user = self.request.user)
+        profile = Profile.objects.get(user=self.request.user)
         form.instance.profile = profile
 
         user = self.request.user
@@ -122,130 +129,132 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
         return post
 
+
 class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
-    template_name ='mini_insta/delete_post_form.html'
+    template_name = 'mini_insta/delete_post_form.html'
     context_object_name = 'post'
 
     def get_login_url(self):
         return reverse('login')
-    def get_context_data(self,**kwargs):
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile= Profile.objects.get(user = self.request.user)
-        context['profile']= profile
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
         return context
 
     def get_success_url(self):
-        return reverse('show_profile') 
+        return reverse('show_profile')
+
 
 class UpdatePostView(LoginRequiredMixin, UpdateView):
-    model=Post
+    model = Post
     form_class = UpdatePostForm
-    template_name='mini_insta/update_post_form.html'
+    template_name = 'mini_insta/update_post_form.html'
 
     def get_login_url(self):
         return reverse('login')
 
-class ShowFollowersDetailView(DetailView):
-    model=Profile
-    template_name= 'mini_insta/show_followers.html'
-    context_object_name='followers'
 
+class ShowFollowersDetailView(DetailView):
+    model = Profile
+    template_name = 'mini_insta/show_followers.html'
+    context_object_name = 'followers'
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(user = self.request.user)
+        profile = Profile.objects.get(user=self.request.user)
         context["follower"] = profile.get_followers()
         return context
-    
+
 
 class ShowFollowingDetailView(DetailView):
-    model=Profile
-    template_name= 'mini_insta/show_following.html'
-    context_object_name='following'
+    model = Profile
+    template_name = 'mini_insta/show_following.html'
+    context_object_name = 'following'
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(user = self.request.user)
+        profile = Profile.objects.get(user=self.request.user)
 
         context["following"] = profile.get_following()
         return context
 
+
 class ShowFeedView(LoginRequiredMixin, DetailView):
-    model=Profile
-    template_name='mini_insta/show_feed.html'
-    context_object_name='profile'
+    model = Profile
+    template_name = 'mini_insta/show_feed.html'
+    context_object_name = 'profile'
+
     def get_login_url(self):
         return reverse('login')
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(user = self.request.user)
+        profile = Profile.objects.get(user=self.request.user)
         context["feed"] = profile.get_post_feed()
         return context
 
     def get_object(self):
-        return Profile.objects.get(user = self.request.user)
+        return Profile.objects.get(user=self.request.user)
+
+
 class SearchView(ListView):
-    template_name='mini_insta/search_results.html'
+    template_name = 'mini_insta/search_results.html'
 
     def dispatch(self, request, *args, **kwargs):
         if 'query' not in self.request.GET:
-            profile = Profile.objects.get(user = self.request.user)
+            profile = Profile.objects.get(user=self.request.user)
             return render(request, 'mini_insta/search.html', {'profile': profile})
-        
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        
+
         query = self.request.GET.get('query')
         if query:
             return Post.objects.filter(caption__icontains=query)
-        
+
         return Post.objects.none()
-    
+
     def get_context_data(self, **kwargs):
-        
+
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get('query')
 
-        context["profile"] = Profile.objects.get(user = self.request.user)
+        context["profile"] = Profile.objects.get(user=self.request.user)
         context["query"] = query
         context['posts'] = self.get_queryset()
 
         if query:
             user = Profile.objects.filter(username__icontains=query)
             name = Profile.objects.filter(display_name__icontains=query)
-            bio  = Profile.objects.filter(bio_text__icontains=query)
+            bio = Profile.objects.filter(bio_text__icontains=query)
 
             context['profiles'] = (user | name | bio).distinct()
         else:
             context['profiles'] = Profile.objects.none()
-            
+
         return context
+
 
 class CreateProfileView(CreateView):
     template_name = "mini_insta/create_profile_form.html"
     model = Profile
     form_class = CreateProfileForm
+
     def get_success_url(self):
-            return reverse('show_profile')
+        return reverse('show_profile')
 
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
 
-        context["user_form"] = UserCreationForm()#how do i get some form parts 
+        # how do i get some form parts
+        context["user_form"] = UserCreationForm()
 
         return context
-
-    # def get_queryset(self):
-            
-    #     query = self.request.GET.get('query')
-    #     if query:
-    #         return Post.objects.filter(caption__icontains=query)
-        
-    #     return Post.objects.none()
 
     def form_valid(self, form):
         user_form = UserCreationForm(self.request.POST)
@@ -253,7 +262,8 @@ class CreateProfileView(CreateView):
         if user_form.is_valid():
             user = user_form.save()
 
-            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+            login(self.request, user,
+                  backend='django.contrib.auth.backends.ModelBackend')
 
             form.instance.user = user
 
@@ -263,16 +273,17 @@ class CreateProfileView(CreateView):
             context["user_form"] = user_form
             return self.render_to_response(context)
 
+
 class FollowProfileView(LoginRequiredMixin, TemplateView):
     template_name = "mini_insta/show_profile.html"
-    
+
     def get_login_url(self):
         return reverse('login')
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return reverse('login')
-        
+
         logged_in_profile = Profile.objects.get(user=request.user)
         other_profile = Profile.objects.get(pk=self.kwargs['pk'])
 
@@ -281,9 +292,9 @@ class FollowProfileView(LoginRequiredMixin, TemplateView):
                 profile=other_profile,
                 follower_profile=logged_in_profile
             )
-        return redirect('show_profile', pk = other_profile.pk)
+        return redirect('show_profile', pk=other_profile.pk)
 
-    
+
 class DeleteFollowProfileView(LoginRequiredMixin, TemplateView):
     def get_login_url(self):
         return reverse('login')
@@ -299,7 +310,7 @@ class DeleteFollowProfileView(LoginRequiredMixin, TemplateView):
             profile=other_profile,
             follower_profile=logged_in_profile
         ).delete()
-        return redirect('show_profile', pk = other_profile.pk)
+        return redirect('show_profile', pk=other_profile.pk)
 
 
 class LikePostView(LoginRequiredMixin, TemplateView):
@@ -318,7 +329,7 @@ class LikePostView(LoginRequiredMixin, TemplateView):
                 post=post,
                 profile=logged_in_profile
             )
-        return redirect('show_post', pk = post.pk)
+        return redirect('show_post', pk=post.pk)
 
 
 class DeleteLikePostView(LoginRequiredMixin, TemplateView):
@@ -339,4 +350,46 @@ class DeleteLikePostView(LoginRequiredMixin, TemplateView):
         ).delete()
         return redirect('show_post', pk=post.pk)
 
-    
+
+# API
+
+class ProfileListAPIView(generics.ListAPIView):
+    """GET: Return a list of all profiles."""
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+class ProfileDetailAPIView(generics.RetrieveAPIView):
+    """GET: Return a single profile by primary key."""
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+class ProfilePostListCreateAPIView(generics.ListCreateAPIView):
+    """
+    GET: Return all posts (with nested photos) for one profile.
+    POST: Create a new post for that profile.
+    """
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return Post.objects.filter(profile=profile).order_by('-timestamp')
+
+    def perform_create(self, serializer):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        post = serializer.save(profile=profile)
+
+        # Optional: also create a Photo if image_url was passed in the request
+        image_url = self.request.data.get('image_url')
+        if image_url:
+            Photo.objects.create(post=post, image_url=image_url)
+
+
+class ProfileFeedAPIView(generics.ListAPIView):
+    """GET: Return the post feed for one profile."""
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return profile.get_post_feed()
