@@ -1,3 +1,7 @@
+# File: mini_insta/serializers.py
+# Author: Ricky Cui (rcui1@bu.edu), 11/20/2026
+# Description: DRF serializers for Photo, Post, and Profile models
+
 from rest_framework import serializers
 from .models import Profile, Post, Photo
 

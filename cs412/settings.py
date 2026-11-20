@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "marathon_analytics",
     "voter_analytics",
     "rest_framework",
+    "rest_framework.authtoken",
     "dadjokes",
 ]
 

@@ -3,14 +3,20 @@
 # Description: all the views that are part of this app
 from typing import Any
 
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import *
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login
-from rest_framework import generics
+from django.contrib.auth import authenticate, login
+from rest_framework import generics, status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from .models import *
 from .forms import *
 from .serializers import ProfileSerializer, PostSerializer
@@ -353,14 +359,57 @@ class DeleteLikePostView(LoginRequiredMixin, TemplateView):
 
 # API
 
+class APILoginView(APIView):
+    """POST: Authenticate username/password and return a DRF Token + profile_id."""
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = (request.data.get('username') or '').strip()
+        password = request.data.get('password') or ''
+
+        if not username or not password:
+            return Response(
+                {'detail': 'Username and password are required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user = authenticate(
+            request=request, username=username, password=password)
+        if user is None:
+            return Response(
+                {'detail': 'Invalid username or password.'},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        profile = Profile.objects.filter(user=user).first()
+        if profile is None:
+            return Response(
+                {'detail': 'No profile found for this user.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'profile_id': profile.id,
+            'user': {'id': user.id, 'username': user.username},
+            'profile': ProfileSerializer(profile).data,
+        })
+
+
 class ProfileListAPIView(generics.ListAPIView):
     """GET: Return a list of all profiles."""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
 
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     """GET: Return a single profile by primary key."""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
@@ -370,14 +419,19 @@ class ProfilePostListCreateAPIView(generics.ListCreateAPIView):
     GET: Return all posts (with nested photos) for one profile.
     POST: Create a new post for that profile.
     """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
         return Post.objects.filter(profile=profile).order_by('-timestamp')
 
     def perform_create(self, serializer):
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        if profile.user != self.request.user:
+            raise PermissionDenied(
+                'You can only create posts for your own profile.')
         post = serializer.save(profile=profile)
 
         # Optional: also create a Photo if image_url was passed in the request
@@ -387,9 +441,13 @@ class ProfilePostListCreateAPIView(generics.ListCreateAPIView):
 
 
 class ProfileFeedAPIView(generics.ListAPIView):
-    """GET: Return the post feed for one profile."""
+    """GET: Return the post feed for the authenticated user's own profile."""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        if profile.user != self.request.user:
+            raise PermissionDenied('You can only view your own feed.')
         return profile.get_post_feed()

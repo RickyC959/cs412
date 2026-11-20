@@ -49,6 +49,7 @@ urlpatterns = [
     path('create_profile/', CreateProfileView.as_view(), name="create_profile"),
 
     # REST API endpoints
+    path('api/login/', APILoginView.as_view(), name='api_login'),
     path('api/profiles/', ProfileListAPIView.as_view(),
          name='api_profile_list'),
     path('api/profile/<int:pk>/', ProfileDetailAPIView.as_view(),
